@@ -451,10 +451,18 @@
   .fld input[type=text]:focus,.fld input[type=tel]:focus{border-color:var(--sage);}
   .fld input::placeholder{color:var(--faint);}
   .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;}
+  .cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+  .cal-title{font-size:13.5px;font-weight:500;color:var(--ink);letter-spacing:.01em;}
+  .cal-arrow{width:34px;height:34px;border:1px solid var(--line);border-radius:10px;background:var(--card);
+    color:var(--ink);font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+  .cal-arrow:hover{border-color:var(--sage);color:var(--sage-deep);}
+  .cal-arrow:disabled{opacity:.3;cursor:default;border-color:var(--line-soft);}
+  .cal-arrow:disabled:hover{color:var(--ink);}
   .cal-h{font-size:10px;color:var(--faint);text-align:center;padding:4px 0;font-family:'JetBrains Mono',monospace;}
   .cal-d{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:12.5px;
     border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);cursor:pointer;transition:all .15s;}
   .cal-d.empty{border:none;background:transparent;cursor:default;}
+  .cal-d.past{border-color:var(--line-soft);color:var(--faint);opacity:.4;cursor:default;background:transparent;}
   .cal-d.on{background:var(--sage-deep);color:#F4F1E8;border-color:var(--sage-deep);font-weight:500;}
   .cal-d:not(.empty):not(.on):hover{border-color:var(--sage);}
   .slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
@@ -848,6 +856,11 @@
         </div>
         <div class="fld">
           <label>📅 가능한 날짜 <span class="lbl-sub">여러 개 선택</span></label>
+          <div class="cal-nav">
+            <button type="button" class="cal-arrow" id="calPrev" onclick="moveMonth(-1)" aria-label="이전 달">‹</button>
+            <span class="cal-title" id="calTitle">2026년 7월</span>
+            <button type="button" class="cal-arrow" id="calNext" onclick="moveMonth(1)" aria-label="다음 달">›</button>
+          </div>
           <div class="cal" id="apCal"></div>
         </div>
         <div class="fld">
@@ -1881,26 +1894,62 @@ const pickedDates=new Set();
 const pickedSlots=new Set();
 const SLOTS=['오전 10시','오전 11시','오후 1시','오후 2시','오후 4시','저녁 7시'];
 
+// 달력이 현재 보고 있는 연/월
+let calYear, calMonth; // month: 0~11
+// 선택 가능 범위(오늘 ~ 6개월 뒤)
+const calToday=new Date(); calToday.setHours(0,0,0,0);
+const calMin=new Date(calToday.getFullYear(),calToday.getMonth(),1);
+const calMax=new Date(calToday.getFullYear(),calToday.getMonth()+6,1);
+
 function buildCalendar(){
+  // 처음 열 때만 현재 달로 초기화 (이미 보던 달이 있으면 유지)
+  if(calYear===undefined){ calYear=calToday.getFullYear(); calMonth=calToday.getMonth(); }
+  renderCalendar();
+}
+
+function renderCalendar(){
   const cal=document.getElementById('apCal');
-  if(!cal||cal.dataset.built)return;
+  if(!cal) return;
+  // 헤더 타이틀
+  document.getElementById('calTitle').textContent=`${calYear}년 ${calMonth+1}월`;
+
   const days=['일','월','화','수','목','금','토'];
   let html=days.map(d=>`<div class="cal-h">${d}</div>`).join('');
-  // 다음 달 가까운 4주를 가상으로: 오늘 기준 +3일부터 28칸
-  const today=new Date();
-  const start=new Date(today); start.setDate(today.getDate()+3);
-  // 시작 요일만큼 빈칸
-  const lead=start.getDay();
+
+  const first=new Date(calYear,calMonth,1);
+  const lead=first.getDay();                       // 1일의 요일
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+
   for(let i=0;i<lead;i++) html+=`<div class="cal-d empty"></div>`;
-  for(let i=0;i<28;i++){
-    const d=new Date(start); d.setDate(start.getDate()+i);
-    const dd=d.getDate();
-    const key=(d.getMonth()+1)+'/'+dd;
-    html+=`<div class="cal-d" data-k="${key}" onclick="toggleDate(this,'${key}')">${dd}</div>`;
+  for(let dd=1; dd<=daysInMonth; dd++){
+    const cur=new Date(calYear,calMonth,dd); cur.setHours(0,0,0,0);
+    const key=(calMonth+1)+'/'+dd;
+    const past = cur < calToday;                   // 오늘 이전은 선택 불가
+    const on = pickedDates.has(key) ? ' on' : '';
+    if(past){
+      html+=`<div class="cal-d past">${dd}</div>`;
+    }else{
+      html+=`<div class="cal-d${on}" data-k="${key}" onclick="toggleDate(this,'${key}')">${dd}</div>`;
+    }
   }
   cal.innerHTML=html;
-  cal.dataset.built='1';
+
+  // 화살표 활성/비활성 (범위 밖으로는 못 감)
+  const viewing=new Date(calYear,calMonth,1);
+  document.getElementById('calPrev').disabled = viewing <= calMin;
+  document.getElementById('calNext').disabled = viewing >= calMax;
 }
+
+function moveMonth(dir){
+  const viewing=new Date(calYear,calMonth,1);
+  if(dir<0 && viewing<=calMin) return;
+  if(dir>0 && viewing>=calMax) return;
+  calMonth+=dir;
+  if(calMonth<0){ calMonth=11; calYear--; }
+  if(calMonth>11){ calMonth=0; calYear++; }
+  renderCalendar();
+}
+
 function toggleDate(el,key){
   if(pickedDates.has(key)){pickedDates.delete(key);el.classList.remove('on');}
   else{pickedDates.add(key);el.classList.add('on');}
