@@ -201,7 +201,7 @@
   @keyframes bob{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
 
   .composer{padding:14px 20px 20px;border-top:1px solid var(--line);background:var(--paper);flex-shrink:0;}
-  #opts{max-height:42vh;overflow-y:auto;}
+  #opts{max-height:42vh;overflow-y:auto;overflow-x:hidden;}
   .opt-hint{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;color:var(--faint);
     text-transform:uppercase;margin-bottom:11px;padding-left:2px;}
   .opt{
@@ -1135,7 +1135,14 @@ function addRow(text,me){
   row.className='row'+(me?' me':'');
   row.innerHTML=`<span class="who">${me?'나':'결 AI'}</span><div class="${me?'b-me':'b-ai'}">${text}</div>`;
   thread.appendChild(row);
-  thread.scrollTop=thread.scrollHeight;
+  // 내 답변은 맨 아래로, AI 질문은 그 질문이 화면 위쪽에 오도록 스크롤(가려지지 않게)
+  if(me){
+    thread.scrollTop=thread.scrollHeight;
+  }else{
+    requestAnimationFrame(()=>{
+      row.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  }
   return row;
 }
 function showTyping(){
