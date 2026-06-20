@@ -16,6 +16,28 @@
     if(window.Kakao && KAKAO_APP_KEY && !Kakao.isInitialized()){ Kakao.init(KAKAO_APP_KEY); }
   }catch(e){}
 </script>
+
+<!-- 파이어베이스(신청 데이터 저장). 아래 firebaseConfig에 본인 프로젝트 설정을 붙여넣으면 신청이 관리자 콘솔에 쌓여요. -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+  // ↓↓↓ 여기에 파이어베이스 콘솔에서 받은 설정을 붙여넣으세요. (값이 비어있으면 저장 없이 화면만 동작)
+  window.firebaseConfig = {
+    apiKey: "AIzaSyD1pJ0oLadErRGbR2D7nH-sdwn2jggi2O0",
+    authDomain: "gyeol-3d241.firebaseapp.com",
+    projectId: "gyeol-3d241",
+    storageBucket: "gyeol-3d241.firebasestorage.app",
+    messagingSenderId: "1014313992794",
+    appId: "1:1014313992794:web:bd0df055e24599200c0e63"
+  };
+  window.db = null;
+  try{
+    if(firebaseConfig && firebaseConfig.projectId){
+      firebase.initializeApp(firebaseConfig);
+      window.db = firebase.firestore();
+    }
+  }catch(e){ console.warn('Firebase init 실패:', e); }
+</script>
 <style>
   :root{
     /* neutral ivory + sage */
@@ -1984,6 +2006,30 @@ function submitApply(){
   if(pickedSlots.size===0){toast('가능한 시간대를 하나 이상 골라주세요');return;}
   if(!a1||!a2){toast('필수 동의 항목을 확인해주세요');return;}
   const t=TYPES[resultCode]||TYPES.INFP;
+
+  // 신청 데이터 구성
+  const application={
+    name:name,
+    tel:tel,
+    mbti:resultCode,
+    typeName:t.name.replace(/<br>/g,' '),
+    dates:Array.from(pickedDates),
+    slots:Array.from(pickedSlots),
+    agree:true,
+    status:'wait',
+    createdAt:Date.now()
+  };
+
+  // 파이어베이스에 저장 (설정돼 있으면)
+  if(window.db){
+    try{
+      window.db.collection('applications').add({
+        ...application,
+        createdAtServer: firebase.firestore.FieldValue.serverTimestamp()
+      }).catch(err=>console.warn('신청 저장 실패:', err));
+    }catch(e){ console.warn('신청 저장 예외:', e); }
+  }
+
   document.getElementById('doneMsg').innerHTML=
     `<b>${name}</b>님, <em style="color:var(--sage-deep);font-style:normal">${t.name.replace(/<br>/g,' ')}</em>의 결을 함께 읽을 시간을 신청해주셔서 고마워요. 선택하신 일정으로 확인 후 입력하신 번호로 개별 안내드릴게요.`;
   go('done');
