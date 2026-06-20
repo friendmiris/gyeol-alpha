@@ -1782,15 +1782,19 @@ function fallbackShare(channel,full){
     // 1) 카카오 SDK가 앱키로 초기화돼 있으면 → 진짜 카카오톡 공유창
     try{
       if(window.Kakao && Kakao.isInitialized && Kakao.isInitialized() && Kakao.Share){
+        var shareLink={ mobileWebUrl:RESULT_URL, webUrl:RESULT_URL };
         Kakao.Share.sendDefault({
           objectType:'feed',
           content:{
             title:`나의 결 유형 — ${t.name.replace(/<br>/g,' ')} (${resultCode})`,
             description:'AI가 대화로 읽어낸 진짜 나. 너도 해봐!',
             imageUrl:'https://gyeol-alpha.vercel.app/og.png',
-            link:{ mobileWebUrl:RESULT_URL, webUrl:RESULT_URL },
+            imageWidth:800,
+            imageHeight:420,
+            link:shareLink,
           },
-          buttons:[{ title:'내 결 확인하기', link:{ mobileWebUrl:RESULT_URL, webUrl:RESULT_URL } }],
+          buttons:[{ title:'내 결 확인하기', link:shareLink }],
+          installTalk:true,
         });
         return;
       }
