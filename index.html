@@ -73,7 +73,14 @@
     min-height:760px;
     display:flex;flex-direction:column;
   }
-  .screen{display:none;flex-direction:column;flex:1;}
+  /* 채팅 중에는 기기 높이를 화면에 맞춰, 대화만 안에서 스크롤되고 답변칸은 항상 하단 고정 */
+  body.chatting{padding-top:14px;padding-bottom:14px;}
+  body.chatting .device{
+    min-height:0;
+    height:calc(100dvh - 28px);
+    max-height:860px;
+  }
+  .screen{display:none;flex-direction:column;flex:1;min-height:0;}
   .screen.active{display:flex;animation:rise .5s cubic-bezier(.2,.7,.2,1);}
   @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
@@ -171,7 +178,8 @@
   .typing i:nth-child(3){animation-delay:.36s;}
   @keyframes bob{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
 
-  .composer{padding:14px 20px 20px;border-top:1px solid var(--line);background:var(--paper);}
+  .composer{padding:14px 20px 20px;border-top:1px solid var(--line);background:var(--paper);flex-shrink:0;}
+  #opts{max-height:42vh;overflow-y:auto;}
   .opt-hint{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;color:var(--faint);
     text-transform:uppercase;margin-bottom:11px;padding-left:2px;}
   .opt{
@@ -935,6 +943,7 @@
 const device=document.getElementById('device');
 function go(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.dataset.screen===name));
+  document.body.classList.toggle('chatting', name==='chat');
   if(name==='decode') runDecode();
   if(name==='result') renderResult();
   if(name==='apply'){ buildCalendar(); buildSlots(); }
@@ -1899,7 +1908,7 @@ let calYear, calMonth; // month: 0~11
 // 선택 가능 범위(오늘 ~ 6개월 뒤)
 const calToday=new Date(); calToday.setHours(0,0,0,0);
 const calMin=new Date(calToday.getFullYear(),calToday.getMonth(),1);
-const calMax=new Date(calToday.getFullYear(),calToday.getMonth()+6,1);
+const calMax=new Date(calToday.getFullYear(),calToday.getMonth()+36,1); // 약 3년 뒤까지
 
 function buildCalendar(){
   // 처음 열 때만 현재 달로 초기화 (이미 보던 달이 있으면 유지)
