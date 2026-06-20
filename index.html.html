@@ -1,0 +1,1959 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>결 · GYEOL — 대화로 읽는 성격의 결</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- 카카오톡 공유 SDK. 실제 배포 시 KAKAO_APP_KEY에 발급받은 JavaScript 키를 넣으면 카카오톡 공유창이 바로 떠요. -->
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" crossorigin="anonymous"></script>
+<script>
+  // ↓ 여기에 카카오 developers에서 발급받은 JavaScript 앱키를 넣으세요. (비워두면 데모 폴백 동작)
+  window.KAKAO_APP_KEY = '76c6ce85a0e5dda45d3ffd1497119280';
+  try{
+    if(window.Kakao && KAKAO_APP_KEY && !Kakao.isInitialized()){ Kakao.init(KAKAO_APP_KEY); }
+  }catch(e){}
+</script>
+<style>
+  :root{
+    /* neutral ivory + sage */
+    --paper:#F4F1E8;
+    --paper-soft:#EFEBDF;
+    --card:#FBFAF4;
+    --ink:#2A2823;
+    --ink-soft:#55514733;
+    --muted:#7C766A;
+    --faint:#A8A293;
+    --line:#E2DCCB;
+    --line-soft:#EAE5D6;
+    --sage:#7C8B6E;
+    --sage-deep:#5C6A4E;
+    --sage-mist:#E4E8DA;
+    --clay:#B0816A;
+    --clay-soft:#E8DACE;
+    --gold:#A8915C;
+    --shadow:0 24px 60px -28px rgba(60,55,40,.4);
+    --shadow-soft:0 14px 34px -22px rgba(60,55,40,.32);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  /* 한국어: 단어 단위 줄바꿈 강제 — 글자 단위로 잘리지 않게 */
+  *{word-break:keep-all;overflow-wrap:break-word;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    font-family:'Noto Sans KR',sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    min-height:100vh;
+    display:flex;flex-direction:column;align-items:center;
+    padding:26px 14px 40px;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    line-height:1.6;
+  }
+  .serif{font-family:'Noto Serif KR',serif;}
+  .fr{font-family:'Fraunces',serif;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  ::selection{background:var(--sage-mist);}
+
+  /* paper grain texture */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+  }
+
+  .device{
+    width:100%;max-width:412px;position:relative;z-index:1;
+    background:var(--paper);
+    border-radius:30px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    box-shadow:var(--shadow);
+    min-height:760px;
+    display:flex;flex-direction:column;
+  }
+  .screen{display:none;flex-direction:column;flex:1;}
+  .screen.active{display:flex;animation:rise .5s cubic-bezier(.2,.7,.2,1);}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+  button{font-family:inherit;cursor:pointer;color:inherit;}
+  input{font-family:inherit;}
+
+  .btn{
+    width:100%;padding:16px;border:none;border-radius:14px;
+    background:var(--ink);color:var(--paper);font-size:15px;font-weight:500;
+    letter-spacing:.01em;
+    transition:transform .16s ease, box-shadow .16s ease, background .2s;
+    box-shadow:0 10px 24px -12px rgba(42,40,35,.6);
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 16px 30px -14px rgba(42,40,35,.55);}
+  .btn:active{transform:translateY(0) scale(.99);}
+  .btn.ghost{
+    background:transparent;color:var(--ink);
+    border:1px solid var(--line);box-shadow:none;
+  }
+  .btn.ghost:hover{background:var(--card);border-color:var(--sage);}
+  .btn.sage{background:var(--sage-deep);box-shadow:0 10px 24px -12px rgba(92,106,78,.6);}
+
+  /* ============ LANDING ============ */
+  .lp{flex:1;display:flex;flex-direction:column;padding:34px 30px 30px;position:relative;}
+  .topline{display:flex;align-items:center;justify-content:space-between;}
+  .wordmark{font-family:'Fraunces',serif;font-size:19px;font-weight:500;letter-spacing:.16em;color:var(--ink);}
+  .topline .ko{font-size:11px;color:var(--faint);letter-spacing:.32em;}
+  .lp-hero{flex:1;display:flex;flex-direction:column;justify-content:center;padding:30px 0;}
+  .kicker{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.26em;
+    color:var(--sage-deep);text-transform:uppercase;margin-bottom:22px;
+    display:flex;align-items:center;gap:9px;
+  }
+  .kicker::before{content:"";width:24px;height:1px;background:var(--sage);}
+  .lp h1{
+    font-family:'Noto Serif KR',serif;font-weight:600;font-size:33px;line-height:1.4;
+    letter-spacing:-.01em;color:var(--ink);
+  }
+  .lp h1 em{font-family:'Fraunces',serif;font-style:italic;font-weight:400;color:var(--sage-deep);}
+  .lp-sub{font-size:14px;color:var(--muted);margin-top:20px;line-height:1.85;max-width:300px;}
+
+  /* signature: woven grain */
+  .grain-figure{margin:30px 0 4px;height:96px;position:relative;}
+  .grain-figure svg{width:100%;height:100%;overflow:visible;}
+  .glabel{
+    display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;
+    font-size:9.5px;letter-spacing:.18em;color:var(--faint);margin-top:6px;text-transform:uppercase;
+  }
+
+  .lp-foot{margin-top:auto;}
+  .stat-line{
+    display:flex;align-items:baseline;gap:8px;font-size:12.5px;color:var(--muted);
+    margin-bottom:18px;padding-top:18px;border-top:1px solid var(--line);
+  }
+  .stat-line b{font-family:'Fraunces',serif;font-weight:500;font-size:16px;color:var(--ink);}
+  .lp-note{font-size:11px;color:var(--faint);margin-top:15px;text-align:center;line-height:1.7;letter-spacing:.01em;}
+
+  /* ============ CHAT ============ */
+  .bar{
+    display:flex;align-items:center;gap:12px;padding:16px 20px;
+    border-bottom:1px solid var(--line);background:var(--paper);
+    position:sticky;top:0;z-index:5;
+  }
+  .bar-mark{
+    width:34px;height:34px;border-radius:10px;background:var(--sage-mist);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .bar-mark .fr{font-size:15px;color:var(--sage-deep);}
+  .bar-id .nm{font-size:13.5px;font-weight:500;letter-spacing:.01em;}
+  .bar-id .meta{font-size:10.5px;color:var(--faint);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;margin-top:1px;}
+  .bar-x{margin-left:auto;background:none;border:none;color:var(--faint);font-size:12px;padding:6px;letter-spacing:.02em;}
+  .bar-x:hover{color:var(--ink);}
+
+  .progress{height:2px;background:var(--line-soft);position:relative;}
+  .progress > i{display:block;height:100%;background:var(--sage);width:0;transition:width .5s ease;}
+
+  .thread{flex:1;padding:22px 20px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;}
+  .row{display:flex;flex-direction:column;max-width:86%;animation:pop .35s ease;}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  .row.me{align-self:flex-end;align-items:flex-end;}
+  .who{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;color:var(--faint);
+    text-transform:uppercase;margin:0 4px 5px;}
+  .b-ai{
+    background:var(--card);border:1px solid var(--line-soft);
+    padding:13px 16px;border-radius:4px 16px 16px 16px;font-size:14px;line-height:1.7;color:var(--ink);
+    box-shadow:var(--shadow-soft);
+  }
+  .b-me{
+    background:var(--sage-deep);color:#F4F1E8;
+    padding:12px 16px;border-radius:16px 16px 4px 16px;font-size:14px;line-height:1.65;
+  }
+  .typing{display:flex;gap:4px;padding:14px 16px;background:var(--card);border:1px solid var(--line-soft);border-radius:4px 16px 16px 16px;width:max-content;}
+  .typing i{width:6px;height:6px;border-radius:50%;background:var(--faint);animation:bob 1.1s infinite;}
+  .typing i:nth-child(2){animation-delay:.18s;}
+  .typing i:nth-child(3){animation-delay:.36s;}
+  @keyframes bob{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+
+  .composer{padding:14px 20px 20px;border-top:1px solid var(--line);background:var(--paper);}
+  .opt-hint{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;color:var(--faint);
+    text-transform:uppercase;margin-bottom:11px;padding-left:2px;}
+  .opt{
+    display:block;width:100%;text-align:left;background:var(--card);
+    border:1px solid var(--line);color:var(--ink);
+    padding:14px 16px;border-radius:13px;font-size:13.5px;margin-bottom:9px;
+    transition:all .18s ease;position:relative;
+  }
+  .opt:hover{border-color:var(--sage);transform:translateX(3px);box-shadow:var(--shadow-soft);}
+  .opt .ot{font-weight:500;display:flex;align-items:center;gap:9px;}
+  .opt .odot{width:6px;height:6px;border-radius:50%;background:var(--clay);flex-shrink:0;}
+  .opt .os{display:block;font-size:11px;color:var(--faint);margin-top:5px;padding-left:15px;}
+  .typebar{
+    display:flex;align-items:center;gap:8px;margin-top:4px;
+    background:var(--card);border:1px solid var(--line);border-radius:13px;padding:5px 5px 5px 16px;
+  }
+  .typebar input{flex:1;border:none;outline:none;background:transparent;font-size:13px;color:var(--ink);}
+  .typebar input::placeholder{color:var(--faint);}
+  .send{width:38px;height:38px;border-radius:10px;border:none;background:var(--ink);color:var(--paper);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s;}
+  .send:hover{background:var(--sage-deep);}
+  .send svg{width:17px;height:17px;}
+
+  /* ============ DECODING ============ */
+  .decode{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:30px;padding:40px;text-align:center;}
+  .weave{width:160px;height:160px;position:relative;}
+  .weave svg{width:100%;height:100%;}
+  .decode-t{font-family:'Noto Serif KR',serif;font-size:17px;font-weight:500;color:var(--ink);letter-spacing:.01em;}
+  .decode-s{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.18em;color:var(--faint);text-transform:uppercase;}
+  .decode-steps{width:100%;max-width:230px;}
+  .dstep{display:flex;align-items:center;gap:10px;font-size:11.5px;color:var(--faint);padding:5px 0;
+    opacity:.4;transition:opacity .4s, color .4s;}
+  .dstep.on{opacity:1;color:var(--muted);}
+  .dstep .dc{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--line);flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;transition:all .4s;}
+  .dstep.on .dc{border-color:var(--sage);background:var(--sage);}
+  .dstep.on .dc::after{content:"";width:4px;height:4px;border-radius:50%;background:var(--card);}
+
+  /* ============ RESULT ============ */
+  .res{flex:1;display:flex;flex-direction:column;overflow-y:auto;}
+  .res-head{
+    padding:38px 28px 30px;text-align:center;position:relative;
+    background:linear-gradient(168deg,#EEEADC 0%,#E4E8DA 100%);
+    border-bottom:1px solid var(--line);
+  }
+  .res-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.24em;color:var(--sage-deep);text-transform:uppercase;}
+  .res-code{font-family:'Fraunces',serif;font-size:14px;letter-spacing:.42em;color:var(--clay);margin-top:18px;padding-left:.42em;}
+  .res-name{font-family:'Noto Serif KR',serif;font-weight:700;font-size:29px;line-height:1.35;margin-top:8px;letter-spacing:-.01em;color:var(--ink);}
+  .res-one{font-size:13px;color:var(--muted);margin-top:14px;line-height:1.7;max-width:280px;margin-left:auto;margin-right:auto;}
+  .res-chips{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:18px;}
+  .chip{font-size:11px;letter-spacing:.02em;background:var(--card);color:var(--sage-deep);
+    padding:5px 13px;border-radius:20px;border:1px solid var(--line);}
+  .rare{display:inline-flex;align-items:center;gap:7px;margin-top:20px;font-size:11px;color:var(--clay);
+    font-family:'JetBrains Mono',monospace;letter-spacing:.08em;}
+  .rare::before,.rare::after{content:"";width:16px;height:1px;background:var(--clay-soft);}
+
+  .res-body{padding:28px 24px 30px;}
+  .sec{margin-bottom:32px;}
+  .sec-label{display:flex;align-items:baseline;gap:11px;margin-bottom:20px;}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--clay);letter-spacing:.08em;}
+  .sec-title{font-family:'Noto Serif KR',serif;font-size:16px;font-weight:600;color:var(--ink);letter-spacing:.01em;}
+  .sec-rule{flex:1;height:1px;background:var(--line);align-self:center;}
+
+  /* dimension gauges */
+  .dim{margin-bottom:22px;}
+  .dim-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px;}
+  .dim-nm{font-size:13px;font-weight:500;color:var(--ink);}
+  .dim-en{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--faint);letter-spacing:.12em;text-transform:uppercase;margin-left:7px;}
+  .dim-val{font-family:'Fraunces',serif;font-size:15px;font-weight:500;color:var(--sage-deep);}
+  .dim-poles{display:flex;justify-content:space-between;font-size:10px;color:var(--faint);margin-bottom:7px;}
+  .gauge{height:6px;border-radius:3px;background:var(--line-soft);position:relative;overflow:hidden;}
+  .gauge > span{display:block;height:100%;border-radius:3px;width:0;background:var(--sage);transition:width 1.1s cubic-bezier(.2,.8,.2,1);}
+  .dim-read{font-size:12px;color:var(--muted);line-height:1.7;margin-top:9px;}
+
+  /* narrative blocks */
+  .narr{background:var(--card);border:1px solid var(--line-soft);border-radius:16px;padding:22px 20px;margin-bottom:16px;}
+  .narr h4{font-family:'Noto Serif KR',serif;font-size:14.5px;font-weight:600;margin-bottom:11px;color:var(--ink);
+    display:flex;align-items:center;gap:9px;}
+  .narr h4 .qm{font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--clay);line-height:1;}
+  .narr p{font-size:13px;color:#4A463D;line-height:1.95;letter-spacing:.005em;}
+  .narr p + p{margin-top:12px;}
+  .narr .pull{
+    font-family:'Noto Serif KR',serif;font-size:14px;font-weight:500;color:var(--sage-deep);
+    line-height:1.7;padding:14px 0 4px;border-top:1px dashed var(--line);margin-top:16px;
+  }
+  .scene{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--line-soft);}
+  .scene:last-child{border-bottom:none;padding-bottom:0;}
+  .scene .si{font-family:'Fraunces',serif;font-size:13px;color:var(--clay);flex-shrink:0;width:30px;line-height:1.7;}
+  .scene .st{font-size:12.5px;color:#4A463D;line-height:1.8;}
+  .scene .st b{color:var(--ink);font-weight:500;}
+
+  /* self-calibrate sliders */
+  .calib-intro{font-size:12px;color:var(--muted);line-height:1.75;margin-bottom:20px;}
+  .calib-intro b{color:var(--ink);font-weight:500;}
+  .slider-row{margin-bottom:24px;}
+  .slider-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px;}
+  .slider-nm{font-size:12.5px;font-weight:500;color:var(--ink);}
+  .slider-nm .sub{display:block;font-size:10px;color:var(--faint);font-weight:400;margin-top:2px;}
+  .slider-num{font-family:'Fraunces',serif;font-size:17px;font-weight:500;color:var(--clay);min-width:30px;text-align:right;}
+  .slider-poles{display:flex;justify-content:space-between;font-size:9.5px;color:var(--faint);
+    font-family:'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
+  input[type=range]{
+    -webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;
+    background:var(--line-soft);outline:none;cursor:pointer;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;
+    background:var(--card);border:2px solid var(--sage-deep);cursor:grab;
+    box-shadow:0 3px 8px -2px rgba(60,55,40,.4);transition:transform .12s;
+  }
+  input[type=range]::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.12);}
+  input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;
+    background:var(--card);border:2px solid var(--sage-deep);cursor:grab;}
+  .calib-fill{position:relative;height:6px;margin-bottom:-6px;border-radius:3px;pointer-events:none;
+    background:var(--sage);width:0;transition:width .05s;}
+  .recalc{margin-top:6px;}
+  .recalc-note{font-size:11px;color:var(--faint);text-align:center;margin-top:12px;line-height:1.6;}
+
+  /* compatibility */
+  .compat{display:flex;gap:10px;}
+  .compat-card{flex:1;background:var(--card);border:1px solid var(--line-soft);border-radius:14px;padding:16px 14px;text-align:center;}
+  .compat-card .cl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:9px;}
+  .compat-card.good .cl{color:var(--sage-deep);}
+  .compat-card.tough .cl{color:var(--clay);}
+  .compat-card .ccode{font-family:'Fraunces',serif;font-size:13px;letter-spacing:.2em;color:var(--ink);padding-left:.2em;}
+  .compat-card .cnm{font-size:11.5px;color:var(--muted);margin-top:5px;}
+
+  .res-cta{padding:0 24px 30px;}
+  .share-line{font-size:11px;color:var(--faint);text-align:center;margin-top:16px;letter-spacing:.01em;}
+
+  /* trust / merit */
+  .trust{background:var(--card);border:1px solid var(--line-soft);border-radius:16px;padding:20px;}
+  .trust-grid{display:flex;gap:10px;margin-bottom:16px;}
+  .trust-cell{flex:1;text-align:center;padding:14px 6px;background:var(--sage-mist);border-radius:12px;}
+  .tc-n{font-family:'Fraunces',serif;font-size:26px;font-weight:500;color:var(--sage-deep);line-height:1;}
+  .tc-n span{font-family:'Noto Sans KR';font-size:11px;font-weight:400;margin-left:2px;color:var(--sage-deep);}
+  .tc-l{font-size:10.5px;color:var(--muted);margin-top:8px;line-height:1.4;}
+  .trust-p{font-size:13px;color:#4A463D;line-height:1.95;}
+  .trust-p b{color:var(--ink);font-weight:500;}
+  .trust-note{font-size:11px;color:var(--faint);line-height:1.7;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);}
+
+  /* dimension detail card (HEXACO style) */
+  .dd{border:1px solid var(--line-soft);border-radius:16px;overflow:hidden;margin-bottom:16px;background:var(--card);}
+  .dd-head{padding:18px 20px;display:flex;align-items:center;gap:14px;position:relative;
+    background:linear-gradient(110deg,var(--sage-deep),var(--sage));color:#F4F1E8;}
+  .dd-head.alt{background:linear-gradient(110deg,#9A7558,var(--clay));}
+  .dd-glyph{font-family:'Fraunces',serif;font-style:italic;font-size:34px;line-height:1;opacity:.92;}
+  .dd-titles{flex:1;}
+  .dd-nm{font-family:'Noto Serif KR',serif;font-size:15px;font-weight:600;}
+  .dd-en{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;opacity:.8;margin-top:3px;}
+  .dd-score{text-align:right;}
+  .dd-score .v{font-family:'Fraunces',serif;font-size:28px;font-weight:500;line-height:1;}
+  .dd-score .l{font-size:9px;opacity:.8;letter-spacing:.1em;margin-top:2px;}
+  .dd-mini{height:4px;background:rgba(255,255,255,.25);border-radius:2px;margin-top:11px;overflow:hidden;}
+  .dd-mini > span{display:block;height:100%;background:#F4F1E8;border-radius:2px;width:0;transition:width 1s ease;}
+  .dd-rows{padding:6px 20px 14px;}
+  .dd-row{padding:14px 0;border-bottom:1px solid var(--line-soft);}
+  .dd-row:last-child{border-bottom:none;}
+  .dd-k{font-size:11px;font-weight:500;color:var(--clay);letter-spacing:.04em;margin-bottom:7px;
+    display:flex;align-items:center;gap:7px;}
+  .dd-k::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--clay);}
+  .dd-v{font-size:12.5px;color:#4A463D;line-height:1.85;}
+  .dd-scenes{background:var(--paper-soft);padding:14px 20px 16px;}
+  .dd-sc-t{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:9px;}
+  .dd-sc{font-size:11.5px;color:var(--muted);line-height:1.7;padding:3px 0 3px 14px;position:relative;}
+  .dd-sc::before{content:"–";position:absolute;left:0;color:var(--sage);}
+
+  /* full profile */
+  .profile-wrap{background:var(--card);border:1px solid var(--line-soft);border-radius:16px;padding:6px 22px 22px;}
+  .profile-head{display:flex;align-items:center;justify-content:space-between;padding:16px 0 4px;}
+  .ph-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--sage-deep);}
+  .ph-dot{width:8px;height:8px;border-radius:50%;background:var(--sage);box-shadow:0 0 0 4px var(--sage-mist);}
+  #profile h5{font-family:'Noto Serif KR',serif;font-size:16px;font-weight:700;color:var(--ink);
+    margin:18px 0 12px;letter-spacing:-.01em;}
+  #profile p{font-size:13px;color:#45413A;line-height:2.0;margin-bottom:14px;letter-spacing:.003em;}
+  #profile p b{color:var(--sage-deep);font-weight:500;}
+  #profile p em{font-family:'Noto Serif KR',serif;font-style:normal;color:var(--clay);font-weight:500;}
+
+  /* solutions tabs */
+  .sol-tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:16px;}
+  .sol-tab{padding:11px 2px;text-align:center;font-size:11px;border:1px solid var(--line);
+    border-radius:11px;background:var(--card);color:var(--muted);transition:all .18s;line-height:1.3;}
+  .sol-tab.on{background:var(--sage-deep);color:#F4F1E8;border-color:var(--sage-deep);}
+  .sol-tab .emoji{display:block;font-size:14px;margin-bottom:3px;}
+  .sol-item{display:flex;gap:13px;padding:15px 0;border-bottom:1px solid var(--line-soft);}
+  .sol-item:last-child{border-bottom:none;}
+  .sol-badge{flex-shrink:0;font-size:9.5px;font-family:'JetBrains Mono',monospace;letter-spacing:.06em;
+    padding:4px 9px;border-radius:7px;background:var(--sage-mist);color:var(--sage-deep);height:max-content;text-transform:uppercase;}
+  .sol-badge.book{background:var(--clay-soft);color:#8A5E45;}
+  .sol-badge.act{background:#E8E3D2;color:#8A7B4A;}
+  .sol-badge.watch{background:var(--sage-mist);color:var(--sage-deep);}
+  .sol-c .sc-t{font-size:13px;font-weight:500;color:var(--ink);line-height:1.4;}
+  .sol-c .sc-m{font-size:11px;color:var(--faint);margin-top:3px;font-family:'JetBrains Mono',monospace;letter-spacing:.04em;}
+  .sol-c .sc-d{font-size:12px;color:#4A463D;line-height:1.7;margin-top:7px;}
+  .sol-c .sc-why{font-size:11.5px;color:var(--sage-deep);line-height:1.6;margin-top:7px;padding-left:12px;position:relative;}
+  .sol-c .sc-why::before{content:"→";position:absolute;left:0;color:var(--clay);}
+
+  /* ============ SHARE ============ */
+  .sp{flex:1;display:flex;flex-direction:column;}
+  .sp-body{flex:1;padding:24px 24px 28px;display:flex;flex-direction:column;}
+  .share-card{
+    border-radius:20px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-soft);
+    margin-bottom:22px;background:var(--card);
+  }
+  .share-vis{
+    height:178px;background:linear-gradient(168deg,#EEEADC,#E4E8DA);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;
+  }
+  .share-vis .vcode{font-family:'Fraunces',serif;font-size:13px;letter-spacing:.4em;color:var(--clay);padding-left:.4em;margin-bottom:6px;}
+  .share-vis .vname{font-family:'Noto Serif KR',serif;font-size:20px;font-weight:700;color:var(--ink);}
+  .share-meta{padding:16px 18px;}
+  .share-meta .smt{font-size:13px;font-weight:500;color:var(--ink);}
+  .share-meta .smd{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.6;}
+  .share-meta .sml{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--faint);margin-top:9px;letter-spacing:.04em;}
+  .sbtn{width:100%;padding:14px;border-radius:13px;border:none;font-size:13.5px;font-weight:500;
+    display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:10px;transition:transform .15s, box-shadow .15s;}
+  .sbtn:hover{transform:translateY(-2px);}
+  .sbtn svg{width:17px;height:17px;}
+  .sfoot{text-align:center;font-size:11.5px;color:var(--faint);margin-top:8px;}
+
+  /* ============ SESSION ============ */
+  .ses{flex:1;display:flex;flex-direction:column;overflow-y:auto;}
+  .ses-hero{padding:40px 28px 30px;text-align:center;
+    background:linear-gradient(168deg,#EEEADC 0%,#E4E8DA 100%);border-bottom:1px solid var(--line);}
+  .ses-orb{width:62px;height:62px;border-radius:50%;margin:0 auto 22px;
+    background:radial-gradient(circle at 35% 30%, #F4F1E8, #B7C0A6 55%, var(--sage-deep));
+    box-shadow:0 14px 30px -12px rgba(92,106,78,.5);}
+  .ses-orb.sm{width:48px;height:48px;margin-bottom:16px;}
+  .ses-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.24em;
+    color:var(--sage-deep);text-transform:uppercase;margin-bottom:12px;}
+  .ses-title{font-family:'Noto Serif KR',serif;font-weight:700;font-size:24px;color:var(--ink);letter-spacing:-.01em;}
+  .ses-sub{font-size:12.5px;color:var(--muted);margin-top:12px;letter-spacing:.02em;}
+  .ses-body{padding:26px 24px 30px;}
+  .ses-steps{margin-bottom:22px;}
+  .ses-step{display:flex;align-items:flex-start;gap:16px;padding:15px 4px;border-bottom:1px solid var(--line-soft);}
+  .ses-step:last-child{border-bottom:none;}
+  .ss-n{font-family:'Fraunces',serif;font-size:19px;font-weight:500;color:var(--clay);width:22px;text-align:center;flex-shrink:0;line-height:1.5;}
+  .ss-t{font-size:14px;font-weight:500;color:var(--ink);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .ss-min{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.06em;color:var(--sage-deep);background:var(--sage-mist);padding:2px 7px;border-radius:5px;}
+  .ss-d{font-size:12px;color:var(--muted);line-height:1.7;margin-top:6px;}
+  .ss-e{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:var(--faint);text-transform:uppercase;margin-top:3px;}
+  .ses-lead{font-size:13.5px;color:#45413A;line-height:1.95;margin-bottom:26px;}
+  .ses-lead b{color:var(--sage-deep);font-weight:500;}
+  .ses-block-t{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--clay);margin:0 0 14px;display:flex;align-items:center;gap:9px;}
+  .ses-block-t::before{content:"";width:18px;height:1px;background:var(--clay);}
+  .ses-fit{margin-bottom:26px;}
+  .fit-row{display:flex;align-items:flex-start;gap:11px;font-size:13px;color:#45413A;line-height:1.6;padding:7px 0;}
+  .fit-c{color:var(--sage-deep);font-weight:700;flex-shrink:0;}
+  .ses-note-card{background:var(--sage-mist);border:1px solid var(--sage);border-radius:16px;padding:18px 20px;margin-bottom:20px;}
+  .snc-h{font-family:'Noto Serif KR',serif;font-size:14px;font-weight:600;color:var(--sage-deep);margin-bottom:11px;}
+  .ses-note-card p{font-size:13px;color:#4A463D;line-height:1.85;}
+  .snc-list{list-style:none;display:flex;flex-direction:column;gap:9px;}
+  .snc-list li{font-size:12.5px;color:#3C3A33;line-height:1.6;padding-left:18px;position:relative;}
+  .snc-list li::before{content:"›";position:absolute;left:4px;color:var(--sage-deep);font-weight:700;}
+  .snc-list b{color:var(--sage-deep);font-weight:500;}
+  .ses-meta{display:flex;gap:10px;margin-bottom:20px;}
+  .sm-cell{flex:1;text-align:center;background:var(--card);border:1px solid var(--line-soft);border-radius:13px;padding:14px 6px;}
+  .sm-v{font-family:'Fraunces',serif;font-size:18px;font-weight:500;color:var(--ink);}
+  .sm-l{font-size:10.5px;color:var(--muted);margin-top:4px;}
+  .ses-quote{background:var(--card);border-left:3px solid var(--clay);border-radius:0 12px 12px 0;padding:16px 18px;margin-bottom:20px;}
+  .ses-quote p{font-family:'Noto Serif KR',serif;font-size:13px;color:#3C3A33;line-height:1.85;font-style:italic;}
+  .sq-by{display:block;font-size:11px;color:var(--faint);margin-top:10px;letter-spacing:.02em;}
+  .ses-scarcity{font-size:11.5px;color:var(--clay);text-align:center;background:var(--clay-soft);
+    padding:10px 14px;border-radius:10px;margin-bottom:18px;line-height:1.5;}
+  .ses-disc{font-size:11px;color:var(--faint);text-align:center;margin-top:16px;line-height:1.7;}
+
+  /* apply form */
+  .apply-head{text-align:center;padding:8px 28px 22px;}
+  .fld{margin-bottom:20px;}
+  .fld label{display:block;font-size:12.5px;font-weight:500;color:var(--ink);margin-bottom:9px;letter-spacing:.01em;}
+  .lbl-sub{font-size:11px;color:var(--faint);font-weight:400;margin-left:4px;}
+  .fld input[type=text],.fld input[type=tel]{
+    width:100%;padding:14px 15px;border:1px solid var(--line);border-radius:12px;
+    background:var(--card);font-size:14px;color:var(--ink);outline:none;transition:border .18s;}
+  .fld input[type=text]:focus,.fld input[type=tel]:focus{border-color:var(--sage);}
+  .fld input::placeholder{color:var(--faint);}
+  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;}
+  .cal-h{font-size:10px;color:var(--faint);text-align:center;padding:4px 0;font-family:'JetBrains Mono',monospace;}
+  .cal-d{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:12.5px;
+    border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);cursor:pointer;transition:all .15s;}
+  .cal-d.empty{border:none;background:transparent;cursor:default;}
+  .cal-d.on{background:var(--sage-deep);color:#F4F1E8;border-color:var(--sage-deep);font-weight:500;}
+  .cal-d:not(.empty):not(.on):hover{border-color:var(--sage);}
+  .slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .slot{padding:12px 4px;text-align:center;font-size:12.5px;border:1px solid var(--line);
+    border-radius:11px;background:var(--card);color:var(--ink);cursor:pointer;transition:all .15s;}
+  .slot.on{background:var(--sage-deep);color:#F4F1E8;border-color:var(--sage-deep);}
+  .slot:not(.on):hover{border-color:var(--sage);}
+  .chk{display:flex;gap:10px;align-items:flex-start;font-size:12px;color:#4A463D;line-height:1.6;
+    margin-bottom:12px;cursor:pointer;}
+  .chk input{margin-top:2px;width:16px;height:16px;accent-color:var(--sage-deep);flex-shrink:0;cursor:pointer;}
+  .chk em{font-style:normal;color:var(--clay);font-size:11px;}
+
+  /* done */
+  .done-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:40px 32px;gap:6px;}
+  .done-check{width:78px;height:78px;margin-bottom:18px;}
+  .done-check svg{width:100%;height:100%;}
+  .done-check path{stroke-dasharray:40;stroke-dashoffset:40;animation:draw .6s .2s ease forwards;}
+  @keyframes draw{to{stroke-dashoffset:0;}}
+  .done-p{font-size:13.5px;color:var(--muted);line-height:1.9;max-width:300px;margin:8px 0 22px;}
+  .done-wrap .btn{max-width:280px;}
+
+  /* toast */
+  #toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--ink);color:var(--paper);padding:12px 22px;border-radius:30px;font-size:13px;
+    opacity:0;transition:all .3s;pointer-events:none;z-index:99;box-shadow:var(--shadow);letter-spacing:.01em;}
+
+  /* sheet */
+  .sheet-wrap{position:absolute;inset:0;background:rgba(42,40,35,.42);display:flex;align-items:flex-end;
+    justify-content:center;z-index:200;animation:rise .25s ease;}
+  .sheet{width:100%;max-width:412px;background:var(--paper);border-radius:24px 24px 0 0;padding:22px 22px 28px;
+    box-shadow:0 -10px 36px rgba(42,40,35,.2);}
+  .sheet-grab{width:38px;height:4px;background:var(--line);border-radius:2px;margin:0 auto 18px;}
+  .sheet h3{font-family:'Noto Serif KR',serif;font-size:15px;text-align:center;margin-bottom:4px;}
+  .sheet .ssub{font-size:12px;color:var(--muted);text-align:center;margin-bottom:16px;}
+  .sheet-body{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:15px;
+    font-size:13px;color:var(--ink);line-height:1.8;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;
+    -webkit-user-select:text;user-select:text;}
+  .sheet-copy{width:100%;margin-top:14px;padding:13px;border:none;border-radius:13px;background:var(--ink);
+    color:var(--paper);font-size:14px;font-weight:500;}
+  .sheet-close{width:100%;margin-top:8px;padding:11px;border:none;border-radius:13px;background:transparent;color:var(--muted);font-size:13px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- gradient defs for weave -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="grainG" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#B0816A"/>
+      <stop offset="50%" stop-color="#7C8B6E"/>
+      <stop offset="100%" stop-color="#5C6A4E"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<div class="device" id="device">
+
+  <!-- ============ LANDING ============ -->
+  <section class="screen active" data-screen="landing">
+    <div class="lp">
+      <div class="topline">
+        <span class="wordmark">GYEOL</span>
+        <span class="ko">결 · 대화 분석</span>
+      </div>
+
+      <div class="lp-hero">
+        <span class="kicker">AI Conversation Profiling</span>
+        <h1>몇 마디 대화에도<br><em>성격의 결</em>이<br>새겨져 있어요.</h1>
+        <p class="lp-sub">5분의 짧은 대화를 AI가 읽어내요. 말투, 망설임, 선택의 순간까지 — 당신만의 결을 8개 차원으로 풀어드릴게요.</p>
+
+        <!-- signature: woven grain -->
+        <div class="grain-figure">
+          <svg viewBox="0 0 340 96" preserveAspectRatio="none" id="grainSvg"></svg>
+        </div>
+        <div class="glabel"><span>내향 · 사색</span><span>조율</span><span>외향 · 표현</span></div>
+      </div>
+
+      <div class="lp-foot">
+        <div class="stat-line">지금까지 <b>23,418</b>명이 자신의 결을 확인했어요.</div>
+        <button class="btn" onclick="go('chat')">대화 시작하기</button>
+        <p class="lp-note">진단·치료가 아닌 자기이해를 위한 콘텐츠예요.<br>결과는 익명으로 저장됩니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHAT ============ -->
+  <section class="screen" data-screen="chat">
+    <div class="bar">
+      <div class="bar-mark"><span class="fr">결</span></div>
+      <div class="bar-id">
+        <div class="nm">결 AI</div>
+        <div class="meta" id="turnMeta">01 / 20</div>
+      </div>
+      <button class="bar-x" onclick="resetChat();go('landing')">나가기</button>
+    </div>
+    <div class="progress"><i id="progBar"></i></div>
+    <div class="thread" id="thread"></div>
+    <div class="composer">
+      <div class="opt-hint">골라서 답하거나, 직접 적어보세요</div>
+      <div id="opts"></div>
+      <div class="typebar">
+        <input id="chatInput" placeholder="내 말로 답하기…" onkeydown="if(event.key==='Enter')sendTyped()">
+        <button class="send" onclick="sendTyped()" aria-label="보내기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DECODING ============ -->
+  <section class="screen" data-screen="decode">
+    <div class="decode">
+      <div class="weave">
+        <svg viewBox="0 0 100 100" id="weaveSvg"></svg>
+      </div>
+      <div>
+        <div class="decode-t" id="decodeT">대화의 결을 짜는 중</div>
+        <div class="decode-s" style="margin-top:8px">Weaving your grain</div>
+      </div>
+      <div class="decode-steps" id="decodeSteps"></div>
+    </div>
+  </section>
+
+  <!-- ============ RESULT ============ -->
+  <section class="screen" data-screen="result">
+    <div class="res">
+      <div class="res-head">
+        <div class="res-tag">당신의 결 · Your Type</div>
+        <div class="res-code" id="rCode">INFP</div>
+        <div class="res-name" id="rName">영감을 좇는<br>자유로운 영혼</div>
+        <div class="res-one" id="rOne">혼자 정리한 뒤에야 마음을 꺼내놓는, 느리지만 단단한 사람.</div>
+        <div class="res-chips" id="rChips"></div>
+        <div class="rare" id="rRare">전체의 6.4%</div>
+      </div>
+
+      <div class="res-body">
+
+        <!-- 0. trust / merit -->
+        <div class="sec">
+          <div class="sec-label">
+            <span class="sec-num">01</span>
+            <span class="sec-title">이 진단을 믿어도 될까요</span>
+            <span class="sec-rule"></span>
+          </div>
+          <div class="trust">
+            <div class="trust-grid">
+              <div class="trust-cell">
+                <div class="tc-n">8<span>차원</span></div>
+                <div class="tc-l">검증된 성격 모형 기반</div>
+              </div>
+              <div class="trust-cell">
+                <div class="tc-n">20<span>문항</span></div>
+                <div class="tc-l">대화형 행동 신호 수집</div>
+              </div>
+              <div class="trust-cell">
+                <div class="tc-n">16<span>유형</span></div>
+                <div class="tc-l">조합으로 도출되는 결</div>
+              </div>
+            </div>
+            <p class="trust-p">결은 객관식 설문이 아니라 <b>실제 대화 속 선택·망설임·표현 방식</b>을 읽어요. "어떻게 답해야 좋게 보일까"를 계산하기 전에 나오는 자연스러운 반응이 더 진짜에 가깝기 때문이에요. 성격심리학의 차원 모형을 토대로, 당신의 답을 8개 축으로 분해해 한 사람의 결로 다시 엮습니다.</p>
+            <p class="trust-note">자기이해를 돕는 콘텐츠예요. 의학적 진단·치료가 아니며, 결과는 고정된 라벨이 아니라 지금의 당신을 비추는 거울입니다.</p>
+          </div>
+        </div>
+
+        <!-- 2. dimensions overview -->
+        <div class="sec">
+          <div class="sec-label">
+            <span class="sec-num">02</span>
+            <span class="sec-title">8가지 결 한눈에</span>
+            <span class="sec-rule"></span>
+          </div>
+          <div id="dims"></div>
+        </div>
+
+        <!-- 3. dimension detail (HEXACO style) -->
+        <div class="sec">
+          <div class="sec-label">
+            <span class="sec-num">03</span>
+            <span class="sec-title">차원별 상세 해석</span>
+            <span class="sec-rule"></span>
+          </div>
+          <div id="dimDetails"></div>
+        </div>
+
+        <!-- 4. full AI profile -->
+        <div class="sec">
+          <div class="sec-label">
+            <span class="sec-num">04</span>
+            <span class="sec-title">AI 전체 프로파일</span>
+            <span class="sec-rule"></span>
+          </div>
+          <div class="profile-wrap">
+            <div class="profile-head">
+              <span class="ph-tag">결 AI 분석 완료</span>
+              <span class="ph-dot"></span>
+            </div>
+            <div id="profile"></div>
+          </div>
+        </div>
+
+        <!-- 5. solutions (tabbed) -->
+        <div class="sec">
+          <div class="sec-label">
+            <span class="sec-num">05</span>
+            <span class="sec-title">맞춤 솔루션</span>
+            <span class="sec-rule"></span>
+          </div>
+          <p class="calib-intro" style="margin-bottom:14px">지금 당신의 결에 가장 필요할 질문을 던져, 그에 맞는 것만 골랐어요.</p>
+          <div class="sol-tabs" id="solTabs"></div>
+          <div id="solBody"></div>
+        </div>
+
+        <!-- 6. self-calibrate -->
+        <div class="sec">
+          <div class="sec-label">
+            <span class="sec-num">06</span>
+            <span class="sec-title">직접 맞춰보기</span>
+            <span class="sec-rule"></span>
+          </div>
+          <p class="calib-intro">AI의 해석이 조금 어긋난다 싶으면 <b>직접 손으로 옮겨</b> 보세요. 슬라이더를 움직이면 유형과 해석이 다시 계산돼요.</p>
+          <div id="sliders"></div>
+          <button class="btn sage recalc" onclick="recalibrate()">다시 계산하기</button>
+          <p class="recalc-note">내가 아는 나와 AI가 본 나, 그 사이를 좁혀가는 과정이에요.</p>
+        </div>
+
+        <!-- 7. compatibility -->
+        <div class="sec">
+          <div class="sec-label">
+            <span class="sec-num">07</span>
+            <span class="sec-title">결이 맞는 사람</span>
+            <span class="sec-rule"></span>
+          </div>
+          <div class="compat">
+            <div class="compat-card good">
+              <div class="cl">잘 통해요</div>
+              <div class="ccode" id="compGoodCode">ENFJ</div>
+              <div class="cnm" id="compGoodNm">햇살 같은 연결자</div>
+            </div>
+            <div class="compat-card tough">
+              <div class="cl">노력이 필요해요</div>
+              <div class="ccode" id="compToughCode">ESTJ</div>
+              <div class="cnm" id="compToughNm">속도의 추진가</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="res-cta">
+        <button class="btn" onclick="go('share')">내 결과 공유하기</button>
+        <button class="btn ghost" style="margin-top:10px" onclick="go('session')">결 퍼실리테이션 신청하기 →</button>
+        <p class="share-line">더 깊은 이야기는, 사람과 사람으로.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SHARE ============ -->
+  <section class="screen" data-screen="share">
+    <div class="sp">
+      <div class="bar">
+        <div class="bar-mark"><span class="fr">결</span></div>
+        <div class="bar-id"><div class="nm">결과 공유</div></div>
+        <button class="bar-x" onclick="go('result')">결과로</button>
+      </div>
+      <div class="sp-body">
+        <div class="share-card">
+          <div class="share-vis">
+            <div class="vcode" id="shareCode">INFP</div>
+            <div class="vname" id="shareName">영감을 좇는 자유로운 영혼</div>
+          </div>
+          <div class="share-meta">
+            <div class="smt">나의 결 유형 — <span id="shareName2">영감을 좇는 자유로운 영혼</span></div>
+            <div class="smd">AI가 5분 대화로 읽어낸 8가지 차원의 나.</div>
+            <div class="sml">gyeol-alpha.vercel.app</div>
+          </div>
+        </div>
+        <button class="sbtn" style="background:#FEE500;color:#191600" onclick="openSheet('kakao')">카카오톡으로 공유</button>
+        <button class="sbtn" style="background:var(--sage-deep);color:#F4F1E8" onclick="openSheet('insta')">인스타 스토리로 공유</button>
+        <button class="sbtn" style="background:var(--card);border:1px solid var(--line);color:var(--ink)" onclick="openSheet('link')">결과 링크 복사</button>
+        <p class="sfoot">결이 비슷한 친구를 찾아보세요.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SESSION INTRO ============ -->
+  <section class="screen" data-screen="session">
+    <div class="ses">
+      <div class="ses-hero">
+        <div class="ses-orb"></div>
+        <div class="ses-tag">1:1 결 퍼실리테이션</div>
+        <h2 class="ses-title">대화로 끝나지 않게,<br>변화로 이어지도록</h2>
+        <p class="ses-sub">전문 퍼실리테이터와 함께하는 60분 · 4주 성장 코칭</p>
+      </div>
+      <div class="ses-body">
+
+        <p class="ses-lead">AI가 읽어준 당신의 결, 거기서 멈추면 그저 흥미로운 결과일 뿐이에요. <b>퍼실리테이션은 그 결과를 ‘살아 있는 변화’로 옮기는 시간</b>이에요. 검사지 한 장이 아니라, 당신의 언어로 다시 쓰는 한 시간을 준비했어요.</p>
+
+        <div class="ses-block-t">어떻게 진행되나요</div>
+        <div class="ses-steps">
+          <div class="ses-step">
+            <span class="ss-n">1</span>
+            <div class="ss-c">
+              <div class="ss-t">언어 무늬 스캔 <span class="ss-min">10분</span></div>
+              <div class="ss-d">당신이 대화에서 자주 쓴 단어와 망설인 지점을 함께 들여다봐요. "왜 이 답을 골랐는지"를 풀어내며 시작해요.</div>
+            </div>
+          </div>
+          <div class="ses-step">
+            <span class="ss-n" style="color:var(--sage-deep)">2</span>
+            <div class="ss-c">
+              <div class="ss-t">숨은 동기 해독 <span class="ss-min">20분</span></div>
+              <div class="ss-d">반복되는 선택 뒤에 어떤 욕구·두려움이 있는지 대화로 찾아가요. 8개 차원 점수가 ‘내 이야기’로 연결되는 순간이에요.</div>
+            </div>
+          </div>
+          <div class="ses-step">
+            <span class="ss-n" style="color:var(--gold)">3</span>
+            <div class="ss-c">
+              <div class="ss-t">반복 패턴 진단 <span class="ss-min">20분</span></div>
+              <div class="ss-d">관계·일·감정에서 매번 걸리는 지점을 짚어요. "또 이러네" 싶은 그 루프의 시작점을 함께 발견해요.</div>
+            </div>
+          </div>
+          <div class="ses-step">
+            <span class="ss-n" style="color:var(--clay)">4</span>
+            <div class="ss-c">
+              <div class="ss-t">결, 다시 설계하기 <span class="ss-min">10분</span></div>
+              <div class="ss-d">바꾸고 싶은 단 하나를 정하고, 다음 4주의 작은 실천을 같이 적어요. 떠날 땐 '할 일'이 손에 쥐어져 있어요.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ses-block-t">이런 분께 권해요</div>
+        <div class="ses-fit">
+          <div class="fit-row"><span class="fit-c">✓</span>결과는 봤는데, "그래서 뭘 해야 하지?"가 남은 분</div>
+          <div class="fit-row"><span class="fit-c">✓</span>관계나 일에서 같은 실수를 반복하는 것 같은 분</div>
+          <div class="fit-row"><span class="fit-c">✓</span>나를 더 정확한 언어로 설명하고 싶은 분</div>
+          <div class="fit-row"><span class="fit-c">✓</span>혼자 고민하기보다 안전한 대화 상대가 필요한 분</div>
+        </div>
+
+        <div class="ses-note-card">
+          <div class="snc-h">퍼실리테이션을 마치면</div>
+          <ul class="snc-list">
+            <li>나를 설명하는 <b>언어가 또렷해져요</b>. 막연한 느낌이 문장이 돼요.</li>
+            <li>흩어진 직관을 <b>데이터로 확인</b>받아 자기 신뢰가 올라가요.</li>
+            <li>반복되던 패턴에 <b>이름이 생기고</b>, 끊어낼 첫 행동이 손에 잡혀요.</li>
+            <li>4주 동안 <b>실천 메시지</b>로 혼자 두지 않고 함께 가요.</li>
+          </ul>
+        </div>
+
+        <div class="ses-meta">
+          <div class="sm-cell"><div class="sm-v">60분</div><div class="sm-l">1:1 진행</div></div>
+          <div class="sm-cell"><div class="sm-v">4주</div><div class="sm-l">성장 코칭</div></div>
+          <div class="sm-cell"><div class="sm-v">오프라인</div><div class="sm-l">대면 진행</div></div>
+        </div>
+
+        <div class="ses-quote">
+          <p>"검사 결과를 100번 읽는 것보다, 60분 대화 한 번이 저를 더 많이 바꿨어요. 제가 왜 그렇게 행동했는지 처음으로 납득됐거든요."</p>
+          <span class="sq-by">— 지난 참여자, 29세</span>
+        </div>
+
+        <div class="ses-scarcity">매주 소수 인원만 진행해요 · 신청자 중 일정·동의를 확인해 개별 안내드려요</div>
+
+        <button class="btn" onclick="go('apply')">퍼실리테이션 신청하기</button>
+        <button class="btn ghost" style="margin-top:10px" onclick="go('result')">← 결과로 돌아가기</button>
+        <p class="ses-disc">자기이해·성장을 돕는 코칭 콘텐츠예요. 의학적 진단·치료가 아닙니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ APPLY FORM ============ -->
+  <section class="screen" data-screen="apply">
+    <div class="ses">
+      <div class="bar" style="background:transparent;border:none;padding-bottom:0">
+        <button class="bar-x" style="margin-left:0;padding-left:0" onclick="go('session')">‹ 퍼실리테이션으로</button>
+      </div>
+      <div class="apply-head">
+        <div class="ses-orb sm"></div>
+        <h2 class="ses-title">퍼실리테이션 신청하기</h2>
+        <p class="ses-sub">당첨자에게만 개별 연락드려요 ✦</p>
+      </div>
+      <div class="ses-body" style="padding-top:4px">
+        <div class="fld">
+          <label>이름</label>
+          <input type="text" id="apName" placeholder="결" autocomplete="off">
+        </div>
+        <div class="fld">
+          <label>휴대폰 번호</label>
+          <input type="tel" id="apTel" placeholder="010-0000-0000" autocomplete="off">
+        </div>
+        <div class="fld">
+          <label>📅 가능한 날짜 <span class="lbl-sub">여러 개 선택</span></label>
+          <div class="cal" id="apCal"></div>
+        </div>
+        <div class="fld">
+          <label>⏰ 가능한 시간대 <span class="lbl-sub">여러 개 선택</span></label>
+          <div class="slots" id="apSlots"></div>
+        </div>
+        <label class="chk"><input type="checkbox" id="apAgree1"><span>개인정보(이름·연락처) 수집 및 퍼실리테이션 안내 연락에 동의합니다. <em>(필수)</em></span></label>
+        <label class="chk"><input type="checkbox" id="apAgree2"><span>본 퍼실리테이션은 자기이해·성장을 돕는 코칭 콘텐츠이며, 의학적 진단·치료가 아님을 이해했습니다. <em>(필수)</em></span></label>
+        <button class="btn" style="margin-top:18px" onclick="submitApply()">신청 완료하기</button>
+        <p class="ses-disc">위기 상황이거나 즉각적인 도움이 필요하면 정신건강 위기상담 ☎ 1577-0199로 연락해요.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ APPLY DONE ============ -->
+  <section class="screen" data-screen="done">
+    <div class="done-wrap">
+      <div class="done-check">
+        <svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24" fill="none" stroke="var(--sage)" stroke-width="2"/><path fill="none" stroke="var(--sage-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M15 27 l8 8 l15 -16"/></svg>
+      </div>
+      <h2 class="ses-title">신청이 접수됐어요</h2>
+      <p class="done-p" id="doneMsg">선택해주신 일정으로 확인 후, 입력하신 번호로 개별 안내드릴게요. 당신의 결을 함께 읽을 시간을 기대하고 있을게요.</p>
+      <button class="btn" onclick="go('result')">결과로 돌아가기</button>
+      <button class="btn ghost" style="margin-top:10px" onclick="resetAll()">처음으로</button>
+    </div>
+  </section>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ============================================================
+   결 · GYEOL — 데이터 & 로직
+   ============================================================ */
+
+/* ---------- landing: woven grain signature ---------- */
+(function drawGrain(){
+  const svg=document.getElementById('grainSvg');
+  const W=340,H=96,rows=7;
+  let html='';
+  for(let r=0;r<rows;r++){
+    const y=H/2;
+    const amp=6+ (r%2? 10:18) + r*1.5;
+    const phase=r*0.5;
+    const opacity=0.18+ (r/rows)*0.5;
+    let d=`M 0 ${y}`;
+    for(let x=0;x<=W;x+=8){
+      const yy=y + Math.sin((x/W)*Math.PI*2 + phase)*amp*((x/W*0.6)+0.4);
+      d+=` L ${x} ${yy.toFixed(1)}`;
+    }
+    html+=`<path d="${d}" fill="none" stroke="url(#grainG)" stroke-width="1.3" opacity="${opacity}"/>`;
+  }
+  svg.innerHTML=html;
+})();
+
+/* ---------- decode weave ---------- */
+(function drawWeave(){
+  const svg=document.getElementById('weaveSvg');
+  let html='<circle cx="50" cy="50" r="46" fill="none" stroke="#E2DCCB" stroke-width="1"/>';
+  for(let i=0;i<5;i++){
+    const r=14+i*7;
+    html+=`<circle cx="50" cy="50" r="${r}" fill="none" stroke="url(#grainG)" stroke-width="1.2" opacity="${0.3+i*0.13}">
+      <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="${i%2?360:-360} 50 50" dur="${4+i}s" repeatCount="indefinite"/>
+    </circle>`;
+  }
+  html+='<circle cx="50" cy="50" r="3.5" fill="#5C6A4E"/>';
+  svg.innerHTML=html;
+})();
+
+/* ---------- navigation ---------- */
+const device=document.getElementById('device');
+function go(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.dataset.screen===name));
+  if(name==='decode') runDecode();
+  if(name==='result') renderResult();
+  if(name==='apply'){ buildCalendar(); buildSlots(); }
+  device.scrollTop=0;
+  const res=device.querySelector('.res'); if(res) res.scrollTop=0;
+  const ses=document.querySelector('.screen.active .ses'); if(ses) ses.scrollTop=0;
+}
+
+/* ============================================================
+   CHAT — MBTI 기반 20문항
+   각 답변은 4개 축(E/I, S/N, T/F, J/P 변형: 표현/조율 등)에 가중치
+   ============================================================ */
+const AXES=['energy','focus','decide','rhythm']; // 내부 4축
+const qa=[
+  // ── 에너지 방향 (E/I) ──
+  {
+    q:'안녕하세요, 결이에요. 편하게 수다 떨듯 답해주세요.<br>요즘 하루 끝에, 가장 먼저 하고 싶은 건 뭐예요?',
+    options:[
+      {t:'문 닫고 혼자 조용히 있고 싶어요', s:'사람보다 고요가 먼저라면', w:{energy:-2}},
+      {t:'누구든 만나서 오늘 있었던 일 풀고 싶어요', s:'말로 풀어야 풀리는 편이라면', w:{energy:+2}},
+    ]
+  },
+  {
+    q:'좋아요. 주말에 약속이 통째로 비었어요. 더 끌리는 쪽은?',
+    options:[
+      {t:'집에서 혼자 좋아하는 거 하며 쉬기', s:'혼자가 편하다면', w:{energy:-2}},
+      {t:'친구들 불러서 어디든 나가기', s:'함께일 때 충전된다면', w:{energy:+2}},
+    ]
+  },
+  {
+    q:'처음 보는 사람들이 많은 모임에 갔어요. 당신은?',
+    options:[
+      {t:'아는 사람 옆에 조용히, 천천히 적응', s:'낯선 자리가 부담된다면', w:{energy:-2}},
+      {t:'먼저 말 걸고 분위기에 금방 섞여요', s:'새 사람도 즐겁다면', w:{energy:+2}},
+    ]
+  },
+  {
+    q:'고민이 생겼을 때, 당신의 방식은?',
+    options:[
+      {t:'혼자 곱씹으며 머릿속으로 정리해요', s:'안에서 풀어내는 편이라면', w:{energy:-1}},
+      {t:'누군가에게 말하면서 정리가 돼요', s:'밖으로 꺼내야 풀린다면', w:{energy:+1}},
+    ]
+  },
+  {
+    q:'에너지가 바닥났을 때, 뭘 하면 채워져요?',
+    options:[
+      {t:'아무도 없는 데서 혼자만의 시간', s:'고요가 충전이라면', w:{energy:-2}},
+      {t:'좋아하는 사람들과 보내는 시간', s:'사람이 충전이라면', w:{energy:+2}},
+    ]
+  },
+  // ── 인식 방식 (S/N) ──
+  {
+    q:'이제 좀 다른 걸 물어볼게요.<br>새로운 일을 시작할 때, 머릿속에 먼저 그려지는 건요?',
+    options:[
+      {t:'당장 뭘 해야 하는지 구체적인 순서', s:'현실과 단계가 먼저라면', w:{focus:-2}},
+      {t:'잘 되면 어떤 그림일지 큰 방향', s:'가능성과 의미가 먼저라면', w:{focus:+2}},
+    ]
+  },
+  {
+    q:'친구가 "이 영화 어때?" 물었어요. 당신의 대답은?',
+    options:[
+      {t:'줄거리랑 배우, 평점부터 차근차근', s:'사실과 디테일을 챙긴다면', w:{focus:-2}},
+      {t:'"분위기가 딱 너랑 잘 맞을 것 같아"', s:'느낌과 인상으로 말한다면', w:{focus:+2}},
+    ]
+  },
+  {
+    q:'설명서 없이 새 가전을 받았어요. 첫 행동은?',
+    options:[
+      {t:'일단 설명서부터 차근차근 읽어요', s:'검증된 순서가 편하다면', w:{focus:-2}},
+      {t:'대충 감으로 눌러보며 익혀요', s:'직접 부딪히며 배운다면', w:{focus:+2}},
+    ]
+  },
+  {
+    q:'대화하다 보면 당신은 주로…',
+    options:[
+      {t:'있었던 일을 사실대로 전하는 편', s:'구체적 경험을 말한다면', w:{focus:-1}},
+      {t:'"근데 만약에~"로 상상이 번져요', s:'아이디어로 튀는 편이라면', w:{focus:+1}},
+    ]
+  },
+  {
+    q:'더 믿음이 가는 말은 어느 쪽이에요?',
+    options:[
+      {t:'"검증된 방법대로 하자"', s:'경험과 데이터를 믿는다면', w:{focus:-2}},
+      {t:'"새로운 방식을 시도해보자"', s:'가능성에 끌린다면', w:{focus:+2}},
+    ]
+  },
+  // ── 판단 기준 (T/F) ──
+  {
+    q:'절반 왔어요. 잘하고 있어요.<br>누군가와 의견이 부딪혔어요. 당신은 보통…',
+    options:[
+      {t:'뭐가 맞는지 따져서 정리하려 해요', s:'논리와 기준을 먼저 본다면', w:{decide:-2}},
+      {t:'상대 기분이 상하지 않게 먼저 살펴요', s:'관계와 마음을 먼저 본다면', w:{decide:+2}},
+    ]
+  },
+  {
+    q:'친구가 울면서 고민을 털어놨어요. 첫 반응은?',
+    options:[
+      {t:'"그래서 어떻게 하면 좋을까?" 해결부터', s:'문제를 풀어주고 싶다면', w:{decide:-2}},
+      {t:'"많이 힘들었겠다…" 일단 마음부터', s:'먼저 공감해주고 싶다면', w:{decide:+2}},
+    ]
+  },
+  {
+    q:'팀에서 결정을 내려야 해요. 당신이 더 중시하는 건?',
+    options:[
+      {t:'가장 합리적이고 효율적인 선택', s:'결과와 원칙이라면', w:{decide:-2}},
+      {t:'모두가 납득하고 편안한 선택', s:'사람과 화합이라면', w:{decide:+2}},
+    ]
+  },
+  {
+    q:'칭찬을 받을 때, 더 기분 좋은 말은?',
+    options:[
+      {t:'"너 진짜 일 잘한다, 정확해"', s:'역량을 인정받을 때라면', w:{decide:-1}},
+      {t:'"너 정말 따뜻하고 좋은 사람이야"', s:'마음을 알아줄 때라면', w:{decide:+1}},
+    ]
+  },
+  {
+    q:'잘못한 친구에게 피드백을 줄 때 당신은?',
+    options:[
+      {t:'솔직하게 사실대로 짚어줘요', s:'직언이 진심이라면', w:{decide:-2}},
+      {t:'상처받지 않게 돌려서 말해요', s:'배려가 먼저라면', w:{decide:+2}},
+    ]
+  },
+  // ── 생활 양식 (J/P) ──
+  {
+    q:'거의 다 왔어요.<br>주말 계획이 갑자기 바뀌었어요. 첫 반응은?',
+    options:[
+      {t:'계획이 틀어져서 살짝 불편해요', s:'정해진 흐름이 편하다면', w:{rhythm:-2}},
+      {t:'오히려 좋아, 새로운 게 생겼네요', s:'즉흥과 변화가 즐겁다면', w:{rhythm:+2}},
+    ]
+  },
+  {
+    q:'여행을 간다면, 당신의 스타일은?',
+    options:[
+      {t:'시간 단위로 동선까지 미리 짜두기', s:'계획이 있어야 안심된다면', w:{rhythm:-2}},
+      {t:'비행기표만 끊고 나머진 그때그때', s:'즉흥이 더 설렌다면', w:{rhythm:+2}},
+    ]
+  },
+  {
+    q:'할 일이 잔뜩 쌓였어요. 당신은?',
+    options:[
+      {t:'목록 만들고 순서대로 하나씩 처리', s:'체계가 편하다면', w:{rhythm:-2}},
+      {t:'마음 가는 것부터, 마감 닥치면 몰아서', s:'유연하게 움직인다면', w:{rhythm:+2}},
+    ]
+  },
+  {
+    q:'책상이나 방 상태로 보면 당신은?',
+    options:[
+      {t:'늘 정돈돼 있어야 마음이 편해요', s:'정리가 안정이라면', w:{rhythm:-1}},
+      {t:'좀 어질러져도 내 나름의 질서가 있어요', s:'느슨함이 편하다면', w:{rhythm:+1}},
+    ]
+  },
+  {
+    q:'마지막이에요. 요즘 가장 듣고 싶은 한마디는?',
+    options:[
+      {t:'"지금 그대로도 충분해"', s:'안정과 인정이 필요할 때', w:{rhythm:-1,decide:+1}},
+      {t:'"너라면 분명 해낼 거야"', s:'도전 앞에서 응원이 필요할 때', w:{focus:+1,rhythm:+1}},
+    ]
+  },
+];
+
+let turn=0;
+const tally={energy:0,focus:0,decide:0,rhythm:0};
+
+function addRow(text,me){
+  const thread=document.getElementById('thread');
+  const row=document.createElement('div');
+  row.className='row'+(me?' me':'');
+  row.innerHTML=`<span class="who">${me?'나':'결 AI'}</span><div class="${me?'b-me':'b-ai'}">${text}</div>`;
+  thread.appendChild(row);
+  thread.scrollTop=thread.scrollHeight;
+  return row;
+}
+function showTyping(){
+  const thread=document.getElementById('thread');
+  const row=document.createElement('div');
+  row.className='row';row.id='typingRow';
+  row.innerHTML='<span class="who">결 AI</span><div class="typing"><i></i><i></i><i></i></div>';
+  thread.appendChild(row);thread.scrollTop=thread.scrollHeight;
+}
+function hideTyping(){const t=document.getElementById('typingRow');if(t)t.remove();}
+
+function renderOpts(){
+  const wrap=document.getElementById('opts');
+  if(turn>=qa.length){wrap.innerHTML='';return;}
+  wrap.innerHTML=qa[turn].options.map((o,i)=>
+    `<button class="opt" onclick="pick(${i})">
+       <span class="ot"><span class="odot"></span>${o.t}</span>
+       <span class="os">${o.s}</span>
+     </button>`).join('');
+}
+function updateProgress(){
+  const total=String(qa.length).padStart(2,'0');
+  document.getElementById('turnMeta').textContent=String(Math.min(turn+1,qa.length)).padStart(2,'0')+' / '+total;
+  document.getElementById('progBar').style.width=(turn/qa.length*100)+'%';
+}
+function pick(i){
+  const o=qa[turn].options[i];
+  addRow(o.t,true);
+  for(const k in o.w) tally[k]+=o.w[k];
+  advance();
+}
+function sendTyped(){
+  const inp=document.getElementById('chatInput');
+  const v=inp.value.trim();
+  if(!v)return;
+  addRow(v,true);
+  inp.value='';
+  // 자유 입력은 중립 처리 (간단한 키워드 가중)
+  const low=v.toLowerCase();
+  if(/혼자|조용|쉬|집/.test(v)) tally.energy-=1;
+  if(/사람|친구|만나|얘기/.test(v)) tally.energy+=1;
+  advance();
+}
+function advance(){
+  turn++;
+  document.getElementById('opts').innerHTML='';
+  updateProgress();
+  if(turn<qa.length){
+    showTyping();
+    setTimeout(()=>{hideTyping();addRow(qa[turn].q);renderOpts();},900);
+  }else{
+    showTyping();
+    setTimeout(()=>{
+      hideTyping();
+      addRow('충분히 들었어요. 이제 당신의 결을 짜볼게요.');
+      setTimeout(()=>go('decode'),1100);
+    },900);
+  }
+}
+function resetChat(){
+  turn=0;
+  for(const k in tally) tally[k]=0;
+  document.getElementById('thread').innerHTML='';
+  document.getElementById('chatInput').value='';
+  updateProgress();
+  addRow(qa[0].q);
+  renderOpts();
+}
+resetChat();
+
+/* ============================================================
+   DECODE
+   ============================================================ */
+let decodeTimer=null;
+const decodeStepList=[
+  '언어 무늬 스캔',
+  '에너지 방향 측정',
+  '판단 기준 분석',
+  '리듬 패턴 진단',
+  '8개 결 종합'
+];
+function runDecode(){
+  const stepsEl=document.getElementById('decodeSteps');
+  stepsEl.innerHTML=decodeStepList.map((s,i)=>
+    `<div class="dstep" data-i="${i}"><span class="dc"></span><span>${s}</span></div>`).join('');
+  const tEl=document.getElementById('decodeT');
+  const tTexts=['대화의 결을 짜는 중','당신의 무늬를 읽는 중','결의 농도를 재는 중'];
+  let i=0;
+  clearInterval(decodeTimer);
+  const stepEls=stepsEl.querySelectorAll('.dstep');
+  decodeTimer=setInterval(()=>{
+    if(i<stepEls.length) stepEls[i].classList.add('on');
+    tEl.textContent=tTexts[i%tTexts.length];
+    i++;
+  },680);
+  setTimeout(()=>{clearInterval(decodeTimer);go('result');},3700);
+}
+
+/* ============================================================
+   TYPE SYSTEM — 4축 → 코드 / 이름 / 해석
+   축: energy(I/E) focus(S/N) decide(T/F) rhythm(C/V)
+   C=Composed(조율·계획) V=Versatile(즉흥·변화)
+   ============================================================ */
+// 8개 결 차원 (세부 항목, 사용자가 슬라이더로 보정)
+let dimScores={};   // 0~100
+const DIMS=[
+  {key:'introspect', nm:'내면 탐색', en:'Introspection', abbr:'I', lo:'외부 지향', hi:'내면 지향', axis:'energy', inv:false},
+  {key:'expression', nm:'감정 표현', en:'Expression', abbr:'X', lo:'담아두기', hi:'드러내기', axis:'energyExp'},
+  {key:'imagination',nm:'상상·직관', en:'Intuition', abbr:'N', lo:'현실 감각', hi:'직관·상상', axis:'focus'},
+  {key:'structure',  nm:'구조화', en:'Structure', abbr:'S', lo:'유연하게', hi:'체계적으로', axis:'rhythmInv'},
+  {key:'logic',      nm:'논리 우선', en:'Logic', abbr:'L', lo:'마음 우선', hi:'논리 우선', axis:'decideInv'},
+  {key:'empathy',    nm:'공감 감수성', en:'Empathy', abbr:'E', lo:'담백함', hi:'섬세함', axis:'decide'},
+  {key:'adventure',  nm:'변화 수용', en:'Openness', abbr:'O', lo:'안정 선호', hi:'변화 선호', axis:'rhythm'},
+  {key:'resilience', nm:'정서 회복', en:'Resilience', abbr:'R', lo:'예민함', hi:'단단함', axis:'resil'},
+];
+
+/* ---- 차원 상세 해석 사전: 점수 구간별 핵심성향/일·커리어/관계/성장/공감상황 ---- */
+const DIM_DETAIL={
+  introspect:{
+    high:{
+      core:'혼자만의 시간에서 에너지를 되찾는 사람입니다. 사람들 사이에 오래 있으면 즐거워도 어딘가 소진되고, 문을 닫고 들어오는 순간 비로소 숨이 트입니다. 말수가 적은 게 아니라, 안에서 충분히 정리된 뒤에야 밖으로 꺼내는 것뿐이에요. 그래서 첫인상은 조용하지만, 마음을 연 사람에게는 누구보다 깊은 이야기를 건넵니다.',
+      work:'집중이 필요한 일, 혼자 깊이 파고드는 작업에서 강점을 발휘합니다. 시끄러운 오픈 오피스보다 조용한 환경에서 생산성이 올라가고, 회의에서 즉답하기보다 정리할 시간을 받았을 때 더 좋은 결과를 냅니다. 다만 자기 성과를 드러내는 데 서툴러, 묵묵히 한 일이 가려질 수 있어요.',
+      rel:'넓은 관계보다 좁고 깊은 관계를 택합니다. 친구가 많지 않아도 한 명 한 명이 진짜 가깝고, 가벼운 스몰토크보다 진짜 대화를 갈망해요. 다만 혼자만의 시간을 지키려다 연락이 뜸해져, 무심하다는 오해를 사기도 합니다.',
+      grow:'혼자 충전하는 시간은 당신의 자원이지, 고쳐야 할 약점이 아니에요. 다만 가끔은 정리되기 전에도 마음을 한 조각 꺼내 보세요. 완성된 말만 하려다 보면, 함께하고 싶은 사람들이 당신 곁에 다가갈 틈을 못 찾을 수 있어요.',
+      scenes:['단톡방에서 다들 떠드는데 읽기만 하다 "ㅋㅋㅋ"만 보낸 적 있다','약속 끝나고 집에 오면 그제야 마음이 편해진다','"왜 이렇게 조용해?"라는 말에 살짝 억울했던 적이 있다','혼자 카페에서 보내는 시간이 가장 평화롭다']
+    },
+    low:{
+      core:'사람들과 부대끼며 에너지를 얻는 사람입니다. 혼자 있는 시간이 길어지면 어쩐지 기운이 빠지고, 누군가와 이야기를 나눌 때 비로소 생각도 정리되고 기분도 살아나요. 머릿속 생각을 말로 꺼내며 다듬는 타입이라, 세상과 연결될 때 가장 당신답습니다.',
+      work:'팀워크, 소통, 사람을 움직이는 일에서 빛납니다. 활기찬 분위기에서 동기가 올라가고, 브레인스토밍처럼 함께 아이디어를 굴리는 자리에서 진가가 드러나요. 다만 혼자 오래 집중해야 하는 일에서는 쉽게 지칠 수 있습니다.',
+      rel:'사람을 빠르게 사귀고 분위기를 환하게 만듭니다. 먼저 다가가고 먼저 연락하는 편이라 주변에 사람이 끊이지 않아요. 다만 가끔은 혼자 있는 시간을 견디기 어려워, 관계에 과하게 기대게 될 수 있습니다.',
+      grow:'당신의 활기는 사람들을 끌어당기는 힘이에요. 다만 혼자 있는 시간을 두려워하지 마세요. 가끔은 외부의 소리를 끄고 내 마음의 소리를 듣는 연습이, 당신을 더 단단하게 만들어 줍니다.',
+      scenes:['조용한 모임에 가면 어느새 내가 분위기를 띄우고 있다','고민이 생기면 일단 누군가에게 말해야 정리된다','혼자 있는 주말이 길어지면 좀이 쑤신다','"생각 좀 하고 말해"라는 말을 들어본 적 있다']
+    }
+  },
+  expression:{
+    high:{
+      core:'기쁨도 서운함도 비교적 솔직하게 드러내는 사람입니다. 표정과 말투에 마음이 그대로 묻어나, 사람들이 당신의 상태를 쉽게 읽어요. 감정을 숨기는 게 서툰 만큼, 진심이 빠르게 전해진다는 강점이 있습니다.',
+      work:'솔직한 피드백과 분위기 메이킹에 능합니다. 좋고 싫음이 분명해 협업에서 방향을 빠르게 잡지만, 감정이 표정에 드러나 프로페셔널해 보이지 않을까 걱정될 때가 있어요.',
+      rel:'마음을 그때그때 표현해 오해가 쌓이지 않습니다. 좋으면 좋다고, 서운하면 서운하다고 말해 관계가 투명해요. 다만 감정이 앞설 때 말이 날카로워질 수 있으니, 한 박자 쉬는 연습이 도움이 됩니다.',
+      grow:'당신의 솔직함은 관계를 건강하게 만드는 힘이에요. 다만 모든 감정을 즉시 표현하기 전에, "이 말이 지금 필요한가"를 한 번 물어보면 표현이 더 단단해집니다.',
+      scenes:['기분이 안 좋으면 티가 난다는 말을 자주 듣는다','좋은 일이 생기면 바로 누군가에게 말하고 싶다','참다가 결국 다 말해버린 적이 있다','표정 관리가 잘 안 된다고 느낀 적 있다']
+    },
+    low:{
+      core:'감정을 안에 담아두는 사람입니다. 속으로 충분히 삭인 뒤에야 꺼내고, 그마저도 꼭 필요할 때만 말해요. 표현이 적은 만큼 한 번 꺼낸 말에는 무게가 있고, 쉽게 흔들리지 않는 안정감을 줍니다.',
+      work:'감정에 휘둘리지 않고 침착하게 일을 처리합니다. 위기 상황에서도 평정을 유지해 신뢰를 얻지만, 속마음이 잘 드러나지 않아 동료가 당신의 상태를 놓칠 수 있어요.',
+      rel:'쉽게 동요하지 않아 곁에 있으면 편안합니다. 다만 서운함도 안에 담아두다 보니, 상대는 아무 문제 없는 줄 알다가 뒤늦게 알게 되곤 해요.',
+      grow:'담아두는 힘은 당신의 안정감이에요. 다만 가끔은 작은 감정이라도 소리 내어 말해 보세요. 표현하지 않은 마음은 상대에게 전해지지 않고, 혼자 무거워지기만 합니다.',
+      scenes:['서운해도 그 자리에선 아무 말 안 하고 넘어간 적 있다','"괜찮아?"라는 말에 늘 "응 괜찮아"라고 답한다','속상한 일을 한참 뒤에야 털어놓는다','감정을 표현하는 게 어색하고 쑥스럽다']
+    }
+  },
+  imagination:{
+    high:{
+      core:'눈앞의 사실보다 그 너머의 가능성과 의미가 먼저 보이는 사람입니다. "만약에"로 시작하는 상상을 즐기고, 남들이 못 보는 연결을 발견해요. 머릿속이 늘 한 발 앞서 있어, 아직 오지 않은 것을 그리는 데 능합니다.',
+      work:'기획, 창작, 큰 그림을 그리는 일에 강합니다. 새로운 아이디어가 끊이지 않고 변화하는 환경에 잘 적응하지만, 반복적이고 디테일한 실무에서는 쉽게 지루함을 느껴요.',
+      rel:'대화에 깊이와 상상력을 더합니다. 의미 있는 이야기를 나눌 때 가장 즐겁지만, 너무 추상적인 이야기에 빠져 현실적인 대화가 필요한 상대를 답답하게 만들 수 있어요.',
+      grow:'당신의 상상력은 남들이 못 보는 곳까지 데려가는 힘이에요. 다만 발은 땅에 두세요. 떠오른 아이디어를 한 가지라도 끝까지 실행하는 경험이, 그 상상을 진짜로 만들어 줍니다.',
+      scenes:['샤워하다 떠오른 아이디어에 혼자 들떴다가 실행은 안 한 적 있다','"그래서 구체적으로 어떻게?"라는 질문에 막힐 때가 있다','아직 오지 않은 미래를 너무 일찍 걱정한다','반복적인 일을 오래 못 견딘다']
+    },
+    low:{
+      core:'손에 잡히는 현실에서 안정을 얻는 사람입니다. 막연한 "언젠가"보다 오늘 할 수 있는 한 걸음이 더 믿음직하고, 실제로 해보며 배우는 타입이에요. 현실 감각이 뛰어나 약속을 지키고 일을 끝맺습니다.',
+      work:'실행력과 꼼꼼함이 강점입니다. 구체적인 목표와 명확한 단계가 있을 때 최고의 성과를 내고, 디테일을 놓치지 않아 신뢰를 얻어요. 다만 정해진 틀을 벗어나는 변화에는 한 박자 신중해집니다.',
+      rel:'든든하고 일관된 사람으로 다가갑니다. 말한 건 지키고 행동으로 보여줘 믿음을 줘요. 다만 가끔은 상대의 추상적인 꿈이나 막연한 이야기에도 귀 기울여 주면 관계가 더 풍성해집니다.',
+      grow:'당신의 현실 감각은 일을 끝맺는 힘이에요. 다만 가끔은 당장 보이지 않는 가능성에도 마음을 열어 보세요. 한 번쯤 "만약에"를 따라가 보면 더 넓은 풍경이 보일 거예요.',
+      scenes:['"대충"이라는 말을 가장 못 견딘다','계획 없이 움직이면 불안하다','막연한 이야기보다 구체적인 게 편하다','검증된 방법을 선호한다']
+    }
+  },
+  structure:{
+    high:{
+      core:'계획과 순서가 있을 때 안심하는 사람입니다. 흐트러진 것을 정돈하는 데서 묘한 만족을 느끼고, 할 일 목록을 하나씩 지워가는 뿌듯함을 압니다. 체계가 곧 당신의 안전지대예요.',
+      work:'프로젝트 관리, 일정 조율, 마감을 지키는 일에 강합니다. 마지막까지 책임지고 끝내는 성실함으로 신뢰를 얻지만, 예상 밖의 변수가 생기면 스트레스를 받을 수 있어요.',
+      rel:'약속을 지키고 계획을 함께 세우는 든든한 사람입니다. 다만 모든 걸 정돈하려는 마음이 상대에게는 융통성 없게 느껴질 수 있으니, 가끔은 흐름에 맡기는 여유도 좋아요.',
+      grow:'당신의 체계성은 일을 완성하는 힘이에요. 다만 통제할 수 없는 일은 그냥 흘러가게 두는 연습이 필요해요. 모든 걸 정돈하려는 마음을 조금 내려놓으면, 예상 밖의 즐거움이 찾아옵니다.',
+      scenes:['여행 전 시간 단위 계획표를 짠다','할 일을 적고 하나씩 지울 때 뿌듯하다','계획이 틀어지면 은근히 신경 쓰인다','정리 안 된 공간이 불편하다']
+    },
+    low:{
+      core:'정해진 틀보다 그때그때 맞추는 게 편한 사람입니다. 여백이 있어야 숨이 트이고, 빡빡한 계획표는 오히려 답답하게 느껴져요. 상황에 유연하게 적응하는 힘이 당신의 강점입니다.',
+      work:'변화에 빠르게 적응하고 즉흥적으로 문제를 해결합니다. 유연한 환경에서 창의력이 살아나지만, 끝맺지 못한 일들이 쌓이거나 마감 직전에 몰아치는 경향이 있어요.',
+      rel:'함께 있으면 편하고 자유로운 사람입니다. 상대를 틀에 가두지 않아요. 다만 약속 시간이나 계획에 느슨해, 꼼꼼한 상대를 불안하게 만들 수 있습니다.',
+      grow:'당신의 유연함은 어디서든 살아남게 하는 힘이에요. 다만 시작의 설렘만큼 마무리의 뿌듯함도 당신 것으로 만들어 보세요. 작은 일이라도 끝까지 해내는 경험이 자유로움을 날개로 바꿔줍니다.',
+      scenes:['여행 가서 정해둔 코스를 무시하고 골목으로 새곤 한다','마감 직전에 몰아서 하는 편이다','계획표를 짜도 잘 안 지킨다','즉흥적으로 결정한 게 더 좋은 기억이 된 적 있다']
+    }
+  },
+  logic:{
+    high:{
+      core:'결정할 때 감정보다 기준과 근거를 먼저 챙기는 사람입니다. "그게 맞는가, 공정한가"를 묻고, 흔들리는 상황에서도 중심을 잡아요. 차가운 게 아니라, 감정에 휩쓸려 잘못된 결정을 내리는 게 두려운 것뿐입니다.',
+      work:'분석, 판단, 객관적 의사결정에 강합니다. 어려운 결정을 사람들이 당신에게 맡기곤 하고, 감정에 휘둘리지 않아 위기에서 신뢰받아요. 다만 팀의 감정적 분위기를 놓칠 때가 있습니다.',
+      rel:'공정하고 일관돼 신뢰를 줍니다. 다만 "너는 너무 냉정해"라는 말을 듣기도 해요. 옳은 말이라도 따뜻하게 전하는 연습을 하면, 당신의 진심이 더 잘 전해집니다.',
+      grow:'당신의 논리는 흔들리지 않는 중심이에요. 다만 논리 뒤에 숨은 진심을 가끔은 말로도 표현해 보세요. 맞는 말보다 따뜻한 말이 필요한 순간이 분명 있습니다.',
+      scenes:['친구가 울며 하소연하면 "그래서 어떻게 해결할 건데?"가 먼저 나온다','감정적인 결정을 내리면 나중에 후회한다','"너 너무 이성적이야"라는 말을 들어봤다','공정하지 않은 상황을 못 참는다']
+    },
+    low:{
+      core:'옳고 그름보다 사람의 마음을 먼저 보는 사람입니다. 관계가 상하지 않는 쪽을 택하고, 결정 앞에서 "이게 모두에게 어떤 영향을 줄까"를 먼저 생각해요. 당신의 따뜻함이 사람들을 모이게 합니다.',
+      work:'협업, 조율, 사람을 챙기는 일에서 빛납니다. 팀의 분위기를 읽고 갈등을 부드럽게 풀지만, 모두를 배려하느라 단호한 결정을 미루다 정작 지칠 수 있어요.',
+      rel:'다정하고 배려 깊어 함께 있으면 따뜻합니다. 상대의 감정을 먼저 챙기죠. 다만 할 말을 삼키다 정작 자신이 소진되니, 나를 돌보는 것도 잊지 마세요.',
+      grow:'당신의 다정함은 가장 큰 자산이에요. 다만 나를 돌보는 것도 이기심이 아니라 책임이라는 걸 기억해요. 당신의 마음에도 누군가의 다정함이 필요합니다.',
+      scenes:['거절을 잘 못 해서 일이 몰린 적 있다','분위기가 어색하면 내가 먼저 풀려고 한다','남의 부탁을 잘 못 거절한다','내 감정보다 남의 감정을 먼저 챙긴다']
+    }
+  },
+  empathy:{
+    high:{
+      core:'타인의 기분 변화를 빠르게 알아채는 사람입니다. 말하지 않아도 표정과 공기에서 마음을 읽고, 그래서 가끔 내 감정보다 남의 감정에 먼저 반응해요. 이 섬세함이 당신을 좋은 친구이자 동료로 만듭니다.',
+      work:'사람을 다루는 일, 분위기를 살피는 역할에 탁월합니다. 팀의 미묘한 긴장을 먼저 감지하고 풀어내지만, 타인의 감정을 흡수하다 정작 본인이 지칠 수 있어요.',
+      rel:'곁에 있으면 이해받는 느낌을 줍니다. 상대의 마음을 세심하게 헤아려요. 다만 모든 감정을 떠안다 보면 관계가 무거워질 수 있으니, 적절한 거리도 필요합니다.',
+      grow:'당신의 공감력은 사람을 잇는 힘이에요. 다만 남의 감정과 내 감정 사이에 선을 긋는 연습을 해보세요. 모든 걸 떠안지 않아도, 당신은 충분히 다정한 사람입니다.',
+      scenes:['친구가 힘들다고 하면 내 일처럼 밤새 고민한다','누가 우울하면 그 기운이 나한테까지 온다','분위기 파악을 빨리 하는 편이다','타인의 표정 변화를 잘 알아챈다']
+    },
+    low:{
+      core:'감정에 휩쓸리지 않고 담백하게 거리를 두는 사람입니다. 타인의 기분에 일일이 흔들리지 않아 오히려 안정감을 주고, 객관적인 시선으로 상황을 봐요. 차분함이 당신의 강점입니다.',
+      work:'감정적으로 무거운 상황에서도 평정을 유지합니다. 냉철한 판단이 필요한 자리에서 신뢰받지만, 동료의 정서적 신호를 놓쳐 무심해 보일 수 있어요.',
+      rel:'쉽게 동요하지 않아 곁에 있으면 든든합니다. 다만 상대가 위로를 원할 때 해결책부터 내놓아, 차갑게 느껴질 수 있어요. 가끔은 그냥 들어주는 것만으로 충분합니다.',
+      grow:'당신의 담백함은 안정감을 주는 힘이에요. 다만 가끔은 상대의 감정에 먼저 공감하는 한마디를 건네 보세요. "많이 힘들었겠다" 한마디가 관계를 깊게 만듭니다.',
+      scenes:['남이 울어도 의외로 침착한 편이다','감정 호소보다 사실 확인이 먼저다','"너는 좀 무덤덤해"라는 말을 들어봤다','드라마틱한 상황에 잘 휩쓸리지 않는다']
+    }
+  },
+  adventure:{
+    high:{
+      core:'정해진 것보다 새로운 자극이 반가운 사람입니다. 변화는 위협이 아니라 가능성으로 다가오고, 가만히 있는 걸 잘 못 견뎌요. 익숙함에 안주하기보다 늘 새로운 문을 두드리는 호기심이 당신을 움직입니다.',
+      work:'새로운 시도, 변화 주도, 도전적인 프로젝트에 강합니다. 스타트업이나 변화가 빠른 환경에서 생기를 얻지만, 안정적이고 반복적인 일에서는 금방 답답함을 느껴요.',
+      rel:'함께 있으면 늘 새로운 경험을 선물합니다. 권태를 모르는 관계를 만들죠. 다만 변화를 좋아하는 만큼, 안정을 원하는 상대를 불안하게 만들 수 있어요.',
+      grow:'당신의 모험심은 삶을 넓히는 힘이에요. 다만 모든 걸 새로 시작하기보다, 한 가지를 깊이 파고드는 경험도 쌓아 보세요. 깊이는 또 다른 종류의 모험입니다.',
+      scenes:['익숙해지면 금방 새로운 걸 찾는다','안 가본 길로 가는 게 더 설렌다','한 가지를 오래 하면 지루해진다','변화가 두렵기보다 반갑다']
+    },
+    low:{
+      core:'익숙하고 예측 가능한 것에서 안정을 얻는 사람입니다. 검증된 길을 신뢰하고, 갑작스러운 변화 앞에선 한 박자 신중해져요. 흔들리지 않는 일관성이 당신과 주변에 든든함을 줍니다.',
+      work:'안정적인 운영, 꾸준한 관리, 신뢰를 쌓는 일에 강합니다. 한 분야를 깊이 다져 전문성을 만들지만, 급격한 변화나 잦은 방향 전환에서는 스트레스를 받아요.',
+      rel:'한결같고 믿음직한 사람입니다. 변치 않는 관계를 만들죠. 다만 새로운 시도를 망설이다, 모험을 좋아하는 상대에게는 답답하게 느껴질 수 있어요.',
+      grow:'당신의 안정감은 신뢰를 쌓는 힘이에요. 다만 가끔은 작은 변화 하나를 일부러 시도해 보세요. 통제 안의 작은 모험이, 당신의 세계를 부드럽게 넓혀줍니다.',
+      scenes:['단골집, 단골 메뉴가 정해져 있다','새로운 환경에 적응하는 데 시간이 걸린다','검증된 방법을 선호한다','급격한 변화는 부담스럽다']
+    }
+  },
+  resilience:{
+    high:{
+      core:'흔들려도 비교적 빨리 제자리를 찾는 사람입니다. 무너지지 않는 게 아니라, 다시 일어서는 데 익숙한 거예요. 힘든 일이 있어도 "그래도 어떻게든 되겠지" 하며 한 걸음을 떼는 회복력이 당신을 지탱합니다.',
+      work:'압박과 변수가 많은 환경에서도 평정을 유지합니다. 실패를 배움으로 바꾸고 빠르게 회복해 신뢰받지만, 가끔 힘든 걸 너무 빨리 넘기려다 감정을 충분히 돌보지 못할 수 있어요.',
+      rel:'곁에 있으면 안정감을 주는 사람입니다. 작은 일에 흔들리지 않죠. 다만 늘 괜찮은 척하다 보면, 정작 당신이 힘들 때 아무도 알아채지 못할 수 있어요.',
+      grow:'당신의 회복력은 큰 강점이에요. 다만 가끔은 약한 모습도 보여주세요. 무너져도 괜찮다고 스스로에게 말해주는 것, 그게 진짜 단단함입니다.',
+      scenes:['힘든 일도 시간이 지나면 괜찮아진다고 믿는다','실패해도 비교적 빨리 털고 일어난다','"넌 참 단단하다"는 말을 들어봤다','웬만한 일에는 잘 흔들리지 않는다']
+    },
+    low:{
+      core:'마음의 결이 섬세해서 자극에 깊게 반응하는 사람입니다. 그만큼 세상을 풍부하게 느끼고, 작은 것에서도 큰 의미를 발견해요. 예민함은 약점이 아니라, 깊이 느끼는 능력의 다른 이름입니다.',
+      work:'섬세한 감각이 필요한 일, 디테일과 감정을 다루는 일에 강합니다. 다만 비판이나 압박에 깊게 영향받아, 회복할 시간과 안전한 환경이 특히 중요해요.',
+      rel:'상대의 미묘한 변화까지 알아채는 깊은 관계를 만듭니다. 다만 작은 말에도 오래 마음이 쓰여, 스스로를 자주 들여다봐야 해요.',
+      grow:'당신의 섬세함은 깊이 느끼는 능력이에요. 다만 모든 자극을 다 받아내지 않아도 괜찮아요. 나를 지키는 작은 울타리를 만드는 연습이, 그 섬세함을 오래 빛나게 합니다.',
+      scenes:['누가 한 말이 오래 마음에 남는다','비판을 들으면 회복하는 데 시간이 걸린다','분위기에 쉽게 영향받는다','작은 것에서도 깊은 의미를 느낀다']
+    }
+  }
+};
+function dimDetail(key,score){
+  return score>=50? DIM_DETAIL[key].high : DIM_DETAIL[key].low;
+}
+
+// tally(-) ~ (+)를 0~100으로 변환
+function norm(v,max){ return Math.round( ((v+max)/(2*max))*100 ); }
+
+function computeDims(){
+  const e=tally.energy, f=tally.focus, d=tally.decide, r=tally.rhythm;
+  dimScores={
+    introspect: norm(-e,9),                 // 내향일수록 높음
+    expression: clamp(norm(e,9)+ (d<0?6:-6)), // 외향+감정표현
+    imagination:norm(f,9),
+    structure:  norm(-r,9),                 // 계획적일수록 높음 → J
+    logic:      norm(-d,9),
+    empathy:    norm(d,9),
+    adventure:  norm(r,9),
+    resilience: clamp(56 + (-e*2) + (-d*1)), // 내향·논리형이 약간 단단하게(연출)
+  };
+}
+function clamp(v){return Math.max(8,Math.min(96,v));}
+
+function deriveCode(){
+  // 슬라이더 보정 후 dimScores 기준으로 표준 MBTI 코드 산출
+  const E = dimScores.introspect>=50 ? 'I':'E';   // 내면 탐색↑ = I
+  const N = dimScores.imagination>=50 ? 'N':'S';  // 상상·직관↑ = N
+  const F = dimScores.empathy>=50 ? 'F':'T';      // 공감 감수성↑ = F
+  const J = dimScores.structure>=50 ? 'J':'P';    // 구조화↑ = J, 유연↑ = P
+  return E+N+F+J;
+}
+
+/* 16유형 이름 사전 (코드 → 이름/한줄/태그/희귀도/궁합) */
+const TYPES={
+  ISTJ:{name:'묵묵히 쌓는 청지기',one:'말보다 결과로 증명하는, 약속을 지키는 사람.',chips:['#성실함','#책임감','#원칙'],rare:9.7,good:['ESFP','분위기를 살리는 무드메이커'],tough:['ENFP','자유로운 영혼']},
+  ISFJ:{name:'곁을 지키는 다정한 수호자',one:'티 안 나게 주변을 챙기는, 따뜻한 뒷심의 사람.',chips:['#배려','#헌신','#안정'],rare:11.3,good:['ESFP','햇살 같은 분위기메이커'],tough:['ENTP','판을 흔드는 도전자']},
+  INFJ:{name:'고요히 길을 비추는 통찰가',one:'세상의 의미를 혼자 곱씹는, 깊고 이상적인 사람.',chips:['#통찰력','#진정성','#이상주의'],rare:4.1,good:['ENFP','빛나는 영감가'],tough:['ESTP','속도의 추진가']},
+  INTJ:{name:'조용히 설계하는 전략가',one:'머릿속에 이미 몇 수 앞을 그려두는, 큰 그림형.',chips:['#전략적','#독립성','#깊이'],rare:3.8,good:['ENFP','에너지의 촉매'],tough:['ESFP','즉흥의 분위기메이커']},
+  ISTP:{name:'혼자 길을 내는 해결사',one:'정해진 매뉴얼보다 내 방식대로, 조용히 실험하는 사람.',chips:['#실용','#독립적','#침착'],rare:7.2,good:['ESFJ','든든한 살림꾼'],tough:['ENFJ','다정한 길잡이']},
+  ISFP:{name:'조용한 감성의 방랑자',one:'겉은 잔잔해도, 마음만은 자유롭게 흐르는 사람.',chips:['#감성적','#유연함','#배려'],rare:8.1,good:['ENFJ','따뜻한 멘토'],tough:['ENTJ','추진력의 지휘자']},
+  INFP:{name:'영감을 좇는 자유로운 영혼',one:'마음이 향하는 곳이라면 어디든 갈 준비가 된 사람.',chips:['#창의적','#공감력','#자유'],rare:6.9,good:['ENFJ','다정한 길잡이'],tough:['ESTJ','현실의 집행관']},
+  INTP:{name:'경계를 넘나드는 사색가',one:'당연한 걸 의심하고, 새로운 길을 그리는 사람.',chips:['#논리적','#독창성','#탐구'],rare:5.0,good:['ENTJ','목표의 지휘자'],tough:['ESFJ','관계의 조율가']},
+  ESTP:{name:'속도의 추진가',one:'일단 움직이고 보는, 현장의 에너지원.',chips:['#실행력','#대담함','#적응'],rare:7.0,good:['ISFJ','곁을 지키는 수호자'],tough:['INFJ','고요한 통찰가']},
+  ESFP:{name:'분위기를 살리는 무드메이커',one:'그 자리를 환하게 만드는, 감각적인 사람.',chips:['#활기','#친화력','#감각'],rare:9.1,good:['ISTJ','묵묵한 청지기'],tough:['INTJ','조용한 전략가']},
+  ENFP:{name:'햇살 같은 영감가',one:'어디든 활기와 가능성을 데려오는, 사람을 잇는 사람.',chips:['#사교적','#영감','#긍정'],rare:10.4,good:['INTJ','조용한 전략가'],tough:['ISTJ','원칙의 청지기']},
+  ENTP:{name:'판을 흔드는 도전자',one:'가만히 있는 걸 못 견디는, 변화를 만드는 사람.',chips:['#모험','#설득력','#기지'],rare:6.2,good:['INFJ','고요한 통찰가'],tough:['ISFJ','곁을 지키는 수호자']},
+  ESTJ:{name:'질서를 세우는 관리자',one:'감정보다 사실, 말보다 결과를 챙기는 사람.',chips:['#실용','#효율','#리더십'],rare:8.4,good:['INFP','자유로운 영혼'],tough:['INFP','이상의 몽상가']},
+  ESFJ:{name:'든든한 관계의 조율가',one:'주변을 챙기고 흐름을 정돈하는, 현실의 중심.',chips:['#책임감','#배려','#사교'],rare:11.0,good:['INTP','경계의 사색가'],tough:['INTP','이성의 탐구가']},
+  ENFJ:{name:'따뜻한 길잡이 멘토',one:'사람과 가능성을 동시에 보는, 다정한 리더형.',chips:['#리더십','#공감','#비전'],rare:7.6,good:['INFP','자유로운 영혼'],tough:['ISTP','마이웨이 해결사']},
+  ENTJ:{name:'추진력 있는 지휘자',one:'목표가 정해지면 길을 만들어 끌고 가는 사람.',chips:['#결단력','#리더십','#효율'],rare:5.8,good:['INFP','자유로운 영혼'],tough:['ISFP','조용한 감성']},
+};
+
+/* 차원별 해석 문장 (점수 구간) */
+function dimRead(key,score){
+  const high={
+    introspect:'생각이 안에서 충분히 익어야 밖으로 나와요. 말수가 적은 게 아니라, 정리할 시간이 필요한 거예요.',
+    expression:'기쁨도 서운함도 비교적 솔직하게 드러내는 편이에요. 표정과 말에 마음이 그대로 묻어나요.',
+    imagination:'눈앞의 사실보다 그 너머의 가능성·의미가 먼저 보여요. "만약에"로 시작하는 상상을 즐겨요.',
+    structure:'계획과 순서가 있을 때 안심해요. 흐트러진 것을 정돈하는 데서 묘한 만족을 느껴요.',
+    logic:'결정할 땐 감정보다 기준과 근거를 먼저 챙겨요. 차갑다기보다, 공정하고 싶은 거예요.',
+    empathy:'타인의 기분 변화를 빠르게 알아채요. 그래서 가끔 내 감정보다 남의 감정에 먼저 반응해요.',
+    adventure:'정해진 것보다 새로운 자극이 반가워요. 변화는 위협이 아니라 가능성으로 다가와요.',
+    resilience:'흔들려도 비교적 빨리 제자리를 찾아요. 무너지지 않는 게 아니라, 다시 일어서는 데 익숙한 거예요.',
+  };
+  const low={
+    introspect:'생각을 말로 풀면서 정리하는 편이에요. 함께 있을 때 오히려 에너지가 차올라요.',
+    expression:'감정을 안에 담아두는 편이에요. 표현이 적은 만큼, 한 번 꺼낸 말엔 무게가 있어요.',
+    imagination:'추상보다 지금 여기, 손에 잡히는 현실이 편해요. 실제로 해보며 배우는 타입이에요.',
+    structure:'정해진 틀보다 그때그때 맞추는 게 편해요. 여백이 있어야 숨이 트여요.',
+    logic:'옳고 그름보다 사람의 마음을 먼저 봐요. 관계가 상하지 않는 쪽을 택하곤 해요.',
+    empathy:'감정에 휩쓸리지 않고 담백하게 거리를 둬요. 그게 오히려 안정감을 줄 때가 있어요.',
+    adventure:'익숙하고 예측 가능한 것에서 안정을 얻어요. 변화 앞에선 한 박자 신중해져요.',
+    resilience:'마음의 결이 섬세해서 자극에 깊게 반응해요. 그만큼 풍부하게 느끼는 사람이에요.',
+  };
+  return score>=50? high[key]: low[key];
+}
+
+/* 전체 AI 프로파일 (HEXACO '전체 프로파일' 스타일 장문) */
+function buildProfile(code){
+  const t=TYPES[code]||TYPES.INFP;
+  const I=code[0]==='I', N=code[1]==='N', F=code[2]==='F', P=code[3]==='P';
+  const nm=t.name.replace(/<br>/g,' ');
+
+  // 강점/그늘 키워드
+  const eWord=I?'고요 속에서 깊어지는':'사람들 속에서 살아나는';
+  const fWord=N?'가능성을 먼저 보는':'현실을 단단히 딛는';
+  const dWord=F?'마음을 먼저 헤아리는':'기준을 먼저 세우는';
+  const vWord=P?'흐름에 유연하게 맞추는':'질서를 차곡차곡 세우는';
+
+  const open=`당신은 <b>${eWord}</b> 사람이에요. 대화의 리듬, 말을 고르는 속도, 선택 앞에서의 망설임 — 그 작은 신호들이 모여 <em>${nm}</em>이라는 결을 그려냈어요. 이건 "이런 사람이어야 한다"는 정답이 아니라, 지금의 당신이 세상과 관계 맺는 고유한 방식이에요.`;
+
+  const p2 = I
+    ? `당신은 ${dWord} 동시에, 안에서 충분히 익힌 뒤에야 밖으로 꺼내는 사람이에요. 그래서 첫인상은 조용하지만, 한 번 마음을 연 사람에게는 누구보다 깊은 이야기를 건네죠. 직장에서는 묵묵히 제 몫을 해내고, 친구 사이에서는 가벼운 수다보다 진짜 대화를 갈망해요. <b>다만 정리되기 전엔 말을 아끼는 습관이</b>, 때로는 당신을 오해받게 만들기도 해요. "무슨 생각 하는지 모르겠다"는 말, 한 번쯤 들어봤을 거예요.`
+    : `당신은 ${dWord} 동시에, 생각을 말로 꺼내며 정리하는 사람이에요. 사람들과 부대낄 때 에너지가 차오르고, 분위기를 환하게 만드는 힘이 있죠. 직장에서는 소통과 협업의 중심에 서고, 친구 사이에서는 먼저 다가가는 사람이에요. <b>다만 혼자 있는 시간을 견디기 어려워</b>, 가끔 관계에 과하게 기대거나 즉흥적인 말로 후회할 때가 있어요.`;
+
+  const p3 = `${fWord} 시선과 ${vWord} 태도가 만나면, 당신은 ${
+    N&&P ? '<b>가능성을 자유롭게 펼치는 아이디어형</b>'
+    : N&&!P ? '<b>큰 그림을 차분히 설계하는 전략가형</b>'
+    : !N&&P ? '<b>현실 감각으로 유연하게 움직이는 실전형</b>'
+    : '<b>맡은 일을 끝까지 책임지는 견고한 실무형</b>'
+  }이 돼요. 이 조합은 당신의 가장 큰 강점이지만, 동시에 그늘도 함께 와요. ${
+    P ? '시작의 설렘은 크지만 마무리가 흐려질 수 있고, 자유를 좇다 끝맺음을 놓칠 때가 있어요.'
+       : '체계는 든든하지만 변수 앞에서 경직되기 쉽고, 완벽을 좇다 스스로를 몰아세울 때가 있어요.'
+  } 강점과 그늘은 동전의 양면이라, 하나만 도려낼 수는 없어요. 중요한 건 <em>언제 이 결을 살리고 언제 의식적으로 반대로 움직일지</em>를 아는 거예요.`;
+
+  const p4 = F
+    ? `관계에서 당신은 <b>상대의 마음을 먼저 읽는 사람</b>이에요. 누가 힘들어하면 내 일처럼 마음 쓰고, 분위기가 어색하면 먼저 풀어내죠. 이 다정함이 사람들을 곁에 모으지만, 동시에 당신을 가장 지치게 하는 지점이기도 해요. 모두를 배려하느라 정작 자신의 감정은 뒤로 미루고, 거절을 못 해 일이 몰리곤 하죠. <em>나를 돌보는 것도 이기심이 아니라 책임</em>이라는 걸, 자주 잊지 않았으면 해요.`
+    : `관계에서 당신은 <b>공정하고 일관된 사람</b>이에요. 감정에 휩쓸리지 않고 중심을 잡아, 사람들이 어려운 판단을 당신에게 맡기죠. 이 단단함이 신뢰를 만들지만, 가끔 "너는 좀 차갑다"는 말로 돌아오기도 해요. 사실 당신은 차가운 게 아니라, 감정이 판단을 흐리는 걸 경계하는 것뿐인데 말이에요. <em>맞는 말 한마디보다 따뜻한 말 한마디가 필요한 순간</em>이 분명 있다는 걸 기억해 주세요.`;
+
+  const close=`${nm}, 이게 지금의 당신이에요. 느리든 빠르든, 조용하든 활기차든 — 그건 고쳐야 할 단점이 아니라 당신을 이루는 결이에요. 20·30대는 남의 기준에 맞추느라 자기 무늬를 깎아내기 쉬운 시기예요. 하지만 당신의 결은, 누군가를 닮으려 애쓰지 않아도 <b>그 자체로 이미 충분히 선명해요</b>. 이제 필요한 건, 그 결을 깎는 게 아니라 더 또렷하게 살려내는 시간이에요.`;
+
+  return {open,p2,p3,p4,close};
+}
+
+/* 맞춤 솔루션 (탭: 행동 팁 / 커리어 / 관계 / 강의·도서) */
+function buildSolutions(code){
+  const I=code[0]==='I', N=code[1]==='N', F=code[2]==='F', J=code[3]==='J';
+  const sol={act:[],career:[],rel:[],books:[],watch:[]};
+
+  // 행동 팁 — 구체적 실행 스텝 포함
+  sol.act.push({badge:'오늘',t:I?'하루 15분, 의도적인 ‘혼자 충전’ 시간 만들기':'하루 한 번, 5분 ‘연결 루틴’ 만들기',
+    d:I?'퇴근 후 또는 잠들기 전 15분, 알림을 끄고 아무것도 하지 않는 시간을 캘린더에 ‘약속’으로 등록해 보세요. ① 휴대폰 무음 ② 좋아하는 음악 한 곡 ③ 그냥 멍때리기. 충전 없이 버티면 어느 순간 방전돼요.'
+       :'아침이나 점심에 5분, 가까운 사람에게 안부 메시지나 짧은 통화를 거는 루틴을 만들어 보세요. ① 떠오른 사람 한 명 ② "잘 지내?" 한 줄 ③ 답이 오면 가볍게 수다. 짧은 연결로도 기분이 살아나요.',
+    why:I?'내면 탐색이 높은 당신에겐 회복 루틴이 곧 컨디션 관리예요.':'외향 에너지가 높은 당신은 연결될 때 가장 당신다워요.'});
+  sol.act.push({badge:'이번 주',t:F?'‘작은 거절’ 한 번 연습하기':'‘감정 먼저’ 한 번 연습하기',
+    d:F?'이번 주에 부담되는 부탁 하나를 골라, 죄책감 없이 거절해 보세요. 공식: "마음은 고마운데, 이번엔 어려울 것 같아." 이유를 길게 변명하지 않는 게 핵심이에요. 거절은 관계를 끊는 게 아니라 지키는 거예요.'
+       :'누군가 힘들다고 할 때, 해결책을 꺼내기 전에 감정부터 인정해 보세요. 공식: "그랬구나, 많이 힘들었겠다." 3초만 참고 공감을 먼저 건네면, 그다음 조언이 훨씬 잘 닿아요.',
+    why:F?'공감 감수성이 높은 당신은 경계를 세울 때 더 오래 다정할 수 있어요.':'논리가 앞서는 당신에게 공감 한마디는 강력한 무기예요.'});
+  sol.act.push({badge:'이번 달',t:J?'‘계획 없는 하루’ 한 번 가져보기':'‘하나만 끝내기’ 챌린지',
+    d:J?'이번 달 하루를 골라, 아무 계획 없이 그날의 기분대로 움직여 보세요. 통제를 내려놓는 연습이에요. 불편하면 그게 바로 성장 지점. 모든 걸 정돈하려는 마음을 조금 풀면 예상 밖의 즐거움이 와요.'
+       :'벌여둔 일 중 가장 작은 것 하나를 골라, 이번 주 안에 완전히 끝내보세요. ① 가장 90% 와 있는 일 ② 마감일 정하기 ③ 끝내고 스스로 보상. 마무리의 뿌듯함을 한 번 맛보면 자유로움이 날개가 돼요.',
+    why:J?'구조화가 높은 당신에겐 ‘느슨함’이 오히려 새로운 근육이에요.':'유연함이 강한 당신에게 부족한 건 시작이 아니라 완결이에요.'});
+
+  // 커리어
+  sol.career.push({badge:'잘 맞는 일',t:I?(N?'기획·전략·연구·창작 등 몰입형':'전문직·분석·관리 등 몰입형'):(N?'기획·마케팅·교육 등 소통형':'영업·PM·서비스 등 소통형'),
+    d:I?'방해 없이 깊이 파고드는 환경에서 성과가 나요. 조용히 쌓은 전문성과 결과물이 당신의 무기가 됩니다. 재택·집중 근무 비중이 높은 조직이 잘 맞아요.'
+       :'사람을 움직이고 분위기를 만드는 역할에서 빛나요. 협업과 소통이 잦은 자리, 팀의 에너지원이 되는 포지션이 당신을 살아나게 해요.',
+    why:'결의 에너지 방향과 가장 잘 맞는 일의 형태예요.'});
+  sol.career.push({badge:'보완할 점',t:J?'완벽주의·경직 경계하기':'마감·완결 시스템 만들기',
+    d:J?'계획이 틀어질 때 받는 스트레스가 발목을 잡을 수 있어요. "80%면 충분하다"를 기준으로 삼고, 변수는 일정의 일부로 미리 넣어두세요.'
+       :'아이디어와 시작은 강하지만 끝맺음이 약할 수 있어요. ① 할 일을 3개 이하로 ② 마감을 캘린더에 ③ 25분 집중 타이머. 외부 구조를 빌리면 실행력이 올라가요.',
+    why:'그늘이 커리어의 발목을 잡지 않도록 미리 보완하는 거예요.'});
+  sol.career.push({badge:'성장 과제',t:N?'한 우물 깊이 파기':'큰 그림 보는 훈련',
+    d:N?'아이디어가 넓은 만큼, 한 분야를 6개월만 깊이 파보세요. "무난함"을 넘어 대체 불가한 전문성이 생기고, 그게 20·30대 커리어의 무기가 돼요.'
+       :'실행력이 강한 만큼, 분기에 한 번은 멀리서 전체를 조망해 보세요. "이 일이 어디로 향하나"를 묻는 습관이 당신을 실무자에서 리더로 키워줘요.',
+    why:'커리어를 한 단계 끌어올리는 핵심 보완점이에요.'});
+
+  // 관계
+  sol.rel.push({badge:'잘 통하는 결',t:`${TYPES[code].good[1]} · ${TYPES[code].good[0]}`,
+    d:`이 유형과는 자연스럽게 통해요. 말하지 않아도 리듬이 맞는 느낌을 받을 거예요. 서로의 강점이 부족한 부분을 메워주는 조합이라, 편안하면서도 배울 게 많아요.`,
+    why:'끌리는 이유엔 보완의 원리가 숨어 있어요.'});
+  sol.rel.push({badge:'노력이 필요',t:`${TYPES[code].tough[1]} · ${TYPES[code].tough[0]}`,
+    d:`이 유형과는 속도와 방식이 달라요. 부딪힐 땐 "틀린 게 아니라 다른 거"라고 떠올려 보세요. 처음엔 어렵지만, 알고 보면 가장 많이 배우는 관계가 되기도 해요.`,
+    why:'다름을 이해하면 갈등이 성장으로 바뀌어요.'});
+  sol.rel.push({badge:'관계 처방',t:I?'‘연락 텀’ 미리 설명하기':F?'‘내 감정’도 꺼내기':'‘위로 모드’ 알아채기',
+    d:I?'"나는 혼자 충전하는 시간이 필요한 사람이야"라고 미리 말해두세요. 뜸한 연락이 무심함으로 오해되는 걸 막아줘요.'
+       :F?'남의 감정만 챙기다 내 마음을 놓치지 마세요. "사실 나 그때 좀 서운했어" 같은 말을 꺼내야 관계가 균형을 찾아요.'
+         :'상대가 해결책이 아니라 위로를 원하는 순간이 있어요. 신호는 "그냥 들어줘". 이때는 "그랬구나" 한마디면 충분해요.',
+    why:'당신의 결에서 가장 자주 생기는 오해를 줄여줘요.'});
+
+  // ───── 읽을 책 ─────
+  // 핵심 1권: 에너지 방향
+  if(I){
+    sol.books.push({badge:'먼저 이 책',t:'콰이어트',m:'수전 케인 · 자기계발/심리',
+      d:'시끄러운 세상에서 조용한 사람이 가진 힘을 복원해주는 책이에요. 내향성이 결핍이 아니라 다른 종류의 강점임을 데이터와 사례로 보여줘요.',
+      why:'‘나는 왜 이렇게 조용할까’라는 물음에 가장 단단한 답을 줘요.'});
+  }else{
+    sol.books.push({badge:'먼저 이 책',t:'사람은 무엇으로 사는가',m:'데일 카네기 · 인간관계',
+      d:'사람을 움직이는 당신의 강점을 ‘기술’로 다듬어주는 고전이에요. 진심 어린 관심이 어떻게 관계를 바꾸는지 구체적 장면으로 풀어내요.',
+      why:'타고난 친화력에 ‘깊이’라는 무기를 더해줘요.'});
+  }
+  // 판단 기준
+  if(F){
+    sol.books.push({badge:'마음 다루기',t:'나는 왜 네가 힘드냐',m:'김용태 · 심리상담',
+      d:'공감 능력이 높은 사람이 관계에서 소진되는 이유와, 건강한 경계를 세우는 법을 다뤄요.',
+      why:'남의 감정을 떠안다 지치는 당신에게 나를 지키는 법을 알려줘요.'});
+    sol.books.push({badge:'더 읽기',t:'당신이 옳다',m:'정혜신 · 치유 심리',
+      d:'섣부른 충고 대신 ‘공감’이 어떻게 사람을 살리는지 말하는 책이에요. 위로의 언어를 새로 배우게 돼요.',
+      why:'다정한 당신이 더 깊이 곁을 지키도록 도와줘요.'});
+  }else{
+    sol.books.push({badge:'마음 다루기',t:'감정은 어떻게 만들어지는가',m:'리사 펠드먼 배럿 · 뇌과학',
+      d:'감정이 ‘느끼는 것’이 아니라 ‘만들어지는 것’이라는 관점을 인지과학으로 풀어내요.',
+      why:'논리가 앞서는 당신에게 감정을 다루는 실용적 지도를 줘요.'});
+    sol.books.push({badge:'더 읽기',t:'논리의 기술',m:'바버라 민토 · 사고법',
+      d:'생각을 구조화해 명료하게 전달하는 ‘피라미드 원칙’을 정리한 고전이에요.',
+      why:'기준을 먼저 세우는 당신의 강점을 한층 날카롭게 해줘요.'});
+  }
+  // 인식 방식
+  if(N){
+    sol.books.push({badge:'시야 넓히기',t:'오리지널스',m:'애덤 그랜트 · 조직심리',
+      d:'새로운 아이디어를 실제로 세상에 내놓는 사람들의 공통점을 분석한 책이에요.',
+      why:'가능성을 먼저 보는 당신에게 ‘실행’이라는 다리를 놓아줘요.'});
+  }else{
+    sol.books.push({badge:'시야 넓히기',t:'아주 작은 습관의 힘',m:'제임스 클리어 · 행동설계',
+      d:'작은 행동을 쌓아 큰 변화를 만드는 시스템을 구체적으로 담았어요.',
+      why:'현실을 딛는 당신의 실행력을 복리로 키워줘요.'});
+  }
+  // 생활 양식
+  if(J){
+    sol.books.push({badge:'균형 잡기',t:'에센셜리즘',m:'그렉 맥커운 · 자기경영',
+      d:'더 적게, 그러나 더 중요하게 — 무엇을 버릴지 정하는 기준을 알려줘요.',
+      why:'다 잘하려는 당신에게 ‘덜어내는 힘’을 더해줘요.'});
+  }else{
+    sol.books.push({badge:'균형 잡기',t:'그릿',m:'앤절라 더크워스 · 심리',
+      d:'재능보다 꾸준함이 성취를 만든다는 걸 연구로 증명한 책이에요.',
+      why:'시작은 빠른 당신이 ‘끝까지’의 힘을 기르게 도와줘요.'});
+  }
+  // 공통 1권: 자기이해
+  sol.books.push({badge:'결을 위한 책',t:'마흔에 읽는 쇼펜하우어',m:'강용수 · 인문 에세이',
+    d:'타인의 시선에 휘둘리지 않고 나로 사는 법을, 철학자의 통찰로 담담히 풀어내요.',
+    why:'‘남과 다른 나’를 깎지 않고 지키는 데 힘이 돼요.'});
+
+  // ───── 강연 · 토론 ─────
+  if(I){
+    sol.watch.push({badge:'TED 강연',t:'내향적인 사람의 힘',m:'TED · 수전 케인 (약 19분)',
+      d:'외향성이 지배적인 세계에서 내향형이 에너지를 관리하고 강점을 살리는 법을 이야기해요.',
+      why:'고요 속에서 깊어지는 당신에게 자기 확신을 더해줘요.'});
+  }else{
+    sol.watch.push({badge:'TED 강연',t:'위대한 리더는 어떻게 행동을 이끄나',m:'TED · 사이먼 시넥 (약 18분)',
+      d:'사람을 움직이는 ‘왜(Why)’의 힘을 설명하는 명강연이에요.',
+      why:'사람을 잇는 당신이 ‘방향’까지 제시하도록 도와줘요.'});
+  }
+  if(F){
+    sol.watch.push({badge:'TED 강연',t:'취약함의 힘',m:'TED · 브레네 브라운 (약 20분)',
+      d:'감정적으로 취약해지는 것이 약함이 아니라 용기임을 말해요. 조회수 6천만이 넘는 전설적 강연이에요.',
+      why:'감수성이 높은 당신에게 자신의 감정을 긍정하게 해줘요.'});
+  }else{
+    sol.watch.push({badge:'TED 강연',t:'할 일을 미루는 뇌',m:'TED · 팀 어반 (약 14분)',
+      d:'논리적으로 알면서도 왜 실행이 어려운지, 유머로 풀어낸 강연이에요.',
+      why:'머리로 아는 당신이 ‘행동’으로 옮기게 자극해줘요.'});
+  }
+  // 다큐멘터리/시리즈
+  sol.watch.push({badge:'다큐',t:N?'익스플레인: 마음을 설명하다':'마인드 익스플레인드',m:'넷플릭스 · 다큐 시리즈',
+    d:'기억·불안·마음챙김 같은 주제를 15분 분량으로 명료하게 풀어내는 시리즈예요.',
+    why:'복잡한 내면을 ‘언어’로 정리하는 데 도움이 돼요.'});
+  // 팟캐스트
+  sol.watch.push({badge:'팟캐스트',t:F?'김창옥의 포프리쇼':'지적 대화를 위한 넓고 얕은 지식',m:'오디오 콘텐츠',
+    d:F?'사람과 관계, 마음의 상처를 따뜻하게 풀어내는 토크예요. 출퇴근길에 위로가 돼요.'
+       :'정치·경제·철학을 가볍게 넘나드는 대화형 지식 콘텐츠예요. 토론의 재미를 알려줘요.',
+    why:F?'마음을 데우는 이야기가 당신의 결과 잘 맞아요.':'다양한 관점을 접하며 사고의 폭이 넓어져요.'});
+  // 토론 주제 (직접 해보는 것)
+  sol.watch.push({badge:'토론해보기',t:I?'‘독서 모임’에서 한 번 발언하기':'‘토론 모임’에서 진행자 맡아보기',
+    d:I?'생각이 깊은 당신은 글로 정리할 시간이 있는 독서 모임이 잘 맞아요. 미리 한 문장 준비해 가서, 딱 한 번 소리 내어 말해보세요. 그 한 마디가 당신의 세계를 넓혀요.'
+       :'사람을 모으고 흐름을 읽는 당신은 토론의 진행자 역할에 강해요. 트레바리·문토 같은 모임에서 한 번 사회를 맡아보면, 숨은 리더십이 드러나요.',
+    why:'생각을 ‘말’로 꺼내는 경험이 자기 신뢰를 키워줘요.'});
+
+  return sol;
+}
+const SOL_TABS=[
+  {key:'act',label:'행동',emoji:'📍'},
+  {key:'career',label:'커리어',emoji:'💼'},
+  {key:'rel',label:'관계',emoji:'💗'},
+  {key:'books',label:'읽을 책',emoji:'📚'},
+  {key:'watch',label:'강연·토론',emoji:'🎙️'},
+];
+let solData=null, solActive='act';
+function renderSolTabs(){
+  document.getElementById('solTabs').innerHTML=SOL_TABS.map(tb=>
+    `<button class="sol-tab ${tb.key===solActive?'on':''}" onclick="switchSol('${tb.key}')">
+      <span class="emoji">${tb.emoji}</span>${tb.label}</button>`).join('');
+}
+function renderSolBody(){
+  const items=solData[solActive]||[];
+  document.getElementById('solBody').innerHTML=items.map(it=>{
+    let bc='sol-badge';
+    if(solActive==='books') bc+=' book';
+    else if(solActive==='watch') bc+=' watch';
+    else bc+=' act';
+    return `<div class="sol-item">
+      <span class="${bc}">${it.badge}</span>
+      <div class="sol-c">
+        <div class="sc-t">${it.t}</div>
+        ${it.m?`<div class="sc-m">${it.m}</div>`:''}
+        <div class="sc-d">${it.d}</div>
+        <div class="sc-why">${it.why}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function switchSol(key){solActive=key;renderSolTabs();renderSolBody();}
+
+/* ============================================================
+   RENDER RESULT
+   ============================================================ */
+let resultCode='INFP';
+function renderResult(){
+  computeDims();
+  resultCode=deriveCode();
+  paintResult();
+}
+
+function paintResult(){
+  const t=TYPES[resultCode]||TYPES.INFP;
+
+  // hero
+  document.getElementById('rCode').textContent=resultCode;
+  document.getElementById('rName').innerHTML=t.name;
+  document.getElementById('rOne').textContent=t.one;
+  document.getElementById('rChips').innerHTML=t.chips.map(c=>`<span class="chip">${c}</span>`).join('');
+  document.getElementById('rRare').textContent='전체의 '+t.rare+'%';
+  document.getElementById('shareCode').textContent=resultCode;
+  document.getElementById('shareName').textContent=t.name.replace(/<br>/g,' ');
+  document.getElementById('shareName2').textContent=t.name.replace(/<br>/g,' ');
+
+  // dims overview
+  const dimsEl=document.getElementById('dims');
+  dimsEl.innerHTML=DIMS.map(d=>{
+    const sc=dimScores[d.key];
+    return `<div class="dim">
+      <div class="dim-top">
+        <span><span class="dim-nm">${d.nm}</span><span class="dim-en">${d.en}</span></span>
+        <span class="dim-val">${sc}</span>
+      </div>
+      <div class="dim-poles"><span>${d.lo}</span><span>${d.hi}</span></div>
+      <div class="gauge"><span data-w="${sc}"></span></div>
+      <div class="dim-read">${dimRead(d.key,sc)}</div>
+    </div>`;
+  }).join('');
+  requestAnimationFrame(()=>setTimeout(()=>{
+    document.querySelectorAll('#dims .gauge>span').forEach(s=>s.style.width=s.dataset.w+'%');
+  },120));
+
+  // dimension detail (HEXACO style cards)
+  const ddEl=document.getElementById('dimDetails');
+  ddEl.innerHTML=DIMS.map((d,idx)=>{
+    const sc=dimScores[d.key];
+    const det=dimDetail(d.key,sc);
+    const alt=idx%2===1?' alt':'';
+    return `<div class="dd">
+      <div class="dd-head${alt}">
+        <span class="dd-glyph">${d.abbr}</span>
+        <div class="dd-titles">
+          <div class="dd-nm">${d.nm}</div>
+          <div class="dd-en">${d.en}</div>
+          <div class="dd-mini"><span data-w="${sc}"></span></div>
+        </div>
+        <div class="dd-score"><div class="v">${sc}</div><div class="l">/ 100</div></div>
+      </div>
+      <div class="dd-rows">
+        <div class="dd-row"><div class="dd-k">핵심 성향</div><div class="dd-v">${det.core}</div></div>
+        <div class="dd-row"><div class="dd-k">일 · 커리어</div><div class="dd-v">${det.work}</div></div>
+        <div class="dd-row"><div class="dd-k">관계 · 일상</div><div class="dd-v">${det.rel}</div></div>
+        <div class="dd-row"><div class="dd-k">성장 포인트</div><div class="dd-v">${det.grow}</div></div>
+      </div>
+      <div class="dd-scenes">
+        <div class="dd-sc-t">공감 상황</div>
+        ${det.scenes.map(s=>`<div class="dd-sc">${s}</div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+  requestAnimationFrame(()=>setTimeout(()=>{
+    document.querySelectorAll('#dimDetails .dd-mini>span').forEach(s=>s.style.width=s.dataset.w+'%');
+  },160));
+
+  // full AI profile
+  const pf=buildProfile(resultCode);
+  document.getElementById('profile').innerHTML=`
+    <h5># 결 성격 분석: ${t.name.replace(/<br>/g,' ')}</h5>
+    <p>${pf.open}</p>
+    <p>${pf.p2}</p>
+    <p>${pf.p3}</p>
+    <p>${pf.p4}</p>
+    <p>${pf.close}</p>`;
+
+  // solutions
+  solData=buildSolutions(resultCode);
+  renderSolTabs();
+  renderSolBody();
+
+  // compatibility
+  document.getElementById('compGoodCode').textContent=t.good[0];
+  document.getElementById('compGoodNm').textContent=t.good[1];
+  document.getElementById('compToughCode').textContent=t.tough[0];
+  document.getElementById('compToughNm').textContent=t.tough[1];
+
+  // sliders (세부 점수 직접 보정)
+  renderSliders();
+}
+
+/* ---------- self-calibrate sliders ---------- */
+function renderSliders(){
+  const el=document.getElementById('sliders');
+  el.innerHTML=DIMS.map(d=>{
+    const sc=dimScores[d.key];
+    return `<div class="slider-row">
+      <div class="slider-top">
+        <span class="slider-nm">${d.nm}<span class="sub">${d.lo} ↔ ${d.hi}</span></span>
+        <span class="slider-num" id="snum-${d.key}">${sc}</span>
+      </div>
+      <div class="slider-poles"><span>${d.lo}</span><span>${d.hi}</span></div>
+      <input type="range" min="0" max="100" value="${sc}" id="sr-${d.key}"
+        oninput="onSlide('${d.key}',this.value)">
+    </div>`;
+  }).join('');
+}
+function onSlide(key,val){
+  document.getElementById('snum-'+key).textContent=val;
+  dimScores[key]=parseInt(val,10);
+}
+function recalibrate(){
+  const newCode=deriveCode();
+  const changed = newCode!==resultCode;
+  resultCode=newCode;
+  paintResult();
+  // 슬라이더 다시 그리면 위치 유지됨
+  toast(changed? '결이 다시 짜였어요 → '+newCode : '미세하게 조정됐어요');
+  const head=document.querySelector('.res-head');
+  head.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ============================================================
+   SHARE
+   ============================================================ */
+const RESULT_URL='https://gyeol-alpha.vercel.app';
+function shareText(){
+  const t=TYPES[resultCode]||TYPES.INFP;
+  return `나의 결 유형은 '${t.name.replace(/<br>/g,' ')}' (${resultCode})\nAI가 대화로 읽어낸 진짜 나. 너도 해봐!`;
+}
+
+/* 새 창 열기 (팝업 차단/iframe 제약 시 false 반환) */
+function openWin(url){
+  try{
+    const w=window.open(url,'_blank','noopener,noreferrer');
+    if(w){ try{ w.opener=null; }catch(e){} return true; }
+  }catch(e){}
+  return false;
+}
+
+function openSheet(channel){
+  const txt=shareText();
+  const full=txt+'\n'+RESULT_URL;
+
+  // 카카오는 fallbackShare 내부에서 (SDK 공유창 → 네이티브 → 복사) 순으로 처리
+  if(channel==='kakao'){ fallbackShare(channel,full); return; }
+
+  // 인스타: 모바일 네이티브 공유 우선
+  if(channel==='insta' && navigator.share){
+    navigator.share({title:'결 · GYEOL', text:txt, url:RESULT_URL})
+      .then(()=>toast('공유 완료'))
+      .catch(()=>fallbackShare(channel,full));
+    return;
+  }
+  fallbackShare(channel,full);
+}
+
+function fallbackShare(channel,full){
+  if(channel==='kakao'){
+    const t=TYPES[resultCode]||TYPES.INFP;
+    // 1) 카카오 SDK가 앱키로 초기화돼 있으면 → 진짜 카카오톡 공유창
+    try{
+      if(window.Kakao && Kakao.isInitialized && Kakao.isInitialized() && Kakao.Share){
+        Kakao.Share.sendDefault({
+          objectType:'feed',
+          content:{
+            title:`나의 결 유형 — ${t.name.replace(/<br>/g,' ')} (${resultCode})`,
+            description:'AI가 대화로 읽어낸 진짜 나. 너도 해봐!',
+            imageUrl:'https://gyeol-alpha.vercel.app/og.png',
+            link:{ mobileWebUrl:RESULT_URL, webUrl:RESULT_URL },
+          },
+          buttons:[{ title:'내 결 확인하기', link:{ mobileWebUrl:RESULT_URL, webUrl:RESULT_URL } }],
+        });
+        return;
+      }
+    }catch(e){}
+    // 2) 앱키가 없는 데모 → 휴대폰이면 네이티브 공유(카톡 선택 가능), 아니면 문구 복사 + 안내
+    if(navigator.share){
+      navigator.share({title:'결 · GYEOL', text:full, url:RESULT_URL})
+        .then(()=>toast('공유 완료')).catch(()=>{});
+      return;
+    }
+    copyText(full).finally(()=>{
+      showSheet({title:'카카오톡으로 공유',body:full,btn:'#FEE500',btc:'#191600',
+        hint:'문구가 복사됐어요. 카카오톡을 열어 채팅방에 붙여넣기 하세요.'});
+    });
+    return;
+  }
+  if(channel==='insta'){
+    // 인스타는 외부 URL 직접 공유 API가 없음 → 문구 복사 후 인스타 열기
+    copyText(full).finally(()=>{
+      const ok=openWin('https://www.instagram.com/');
+      if(ok) toast('문구를 복사했어요. 스토리에 붙여넣기 하세요');
+      else showSheet({title:'인스타 스토리로 공유',body:full,btn:'#5C6A4E',btc:'#F4F1E8',
+        hint:'문구가 복사됐어요. 인스타그램을 열어 스토리에 붙여넣기 하세요.'});
+    });
+    return;
+  }
+  // 링크 복사
+  copyText(RESULT_URL)
+    .then(()=>toast('링크를 복사했어요'))
+    .catch(()=>showSheet({title:'결과 링크 복사',body:RESULT_URL,btn:'#2A2823',btc:'#F4F1E8',
+      hint:'아래 링크를 길게 눌러 직접 복사해주세요.'}));
+}
+
+function showSheet(conf){
+  const old=document.getElementById('sheetWrap'); if(old)old.remove();
+  const w=document.createElement('div');
+  w.id='sheetWrap';w.className='sheet-wrap';
+  w.innerHTML=`<div class="sheet">
+    <div class="sheet-grab"></div>
+    <h3>${conf.title}</h3>
+    <div class="ssub">${conf.hint||'아래 문구를 복사해 붙여넣으면 끝이에요.'}</div>
+    <div class="sheet-body" id="sheetBody">${conf.body}</div>
+    <button class="sheet-copy" style="background:${conf.btn};color:${conf.btc}" id="copyBtn">복사하기</button>
+    <button class="sheet-close" id="closeBtn">닫기</button>
+  </div>`;
+  device.appendChild(w);
+  w.querySelector('#copyBtn').onclick=()=>copyText(conf.body)
+    .then(()=>toast('복사됐어요. 붙여넣기 하세요'))
+    .catch(()=>{
+      // 클립보드가 막힌 환경: 본문을 선택 상태로 만들어 수동 복사 유도
+      const body=document.getElementById('sheetBody');
+      const range=document.createRange(); range.selectNodeContents(body);
+      const sel=window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      toast('텍스트를 선택했어요. 길게 눌러 복사하세요');
+    });
+  w.querySelector('#closeBtn').onclick=()=>w.remove();
+  w.onclick=e=>{if(e.target===w)w.remove();};
+}
+
+function copyText(text){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    return navigator.clipboard.writeText(text).catch(()=>legacyCopy(text));
+  }
+  return legacyCopy(text);
+}
+function legacyCopy(text){
+  return new Promise((resolve,reject)=>{
+    try{
+      const ta=document.createElement('textarea');
+      ta.value=text; ta.setAttribute('readonly','');
+      ta.style.position='fixed'; ta.style.top='0'; ta.style.left='0'; ta.style.opacity='0';
+      document.body.appendChild(ta);
+      ta.focus(); ta.select(); ta.setSelectionRange(0,text.length);
+      const ok=document.execCommand('copy');
+      document.body.removeChild(ta);
+      ok?resolve():reject();
+    }catch(e){ reject(e); }
+  });
+}
+
+/* ---------- toast ---------- */
+let toastTimer;
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.opacity='1';t.style.transform='translateX(-50%) translateY(0)';
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(-50%) translateY(20px)';},2200);
+}
+
+/* ============================================================
+   SESSION APPLY — 달력 / 시간대 / 제출
+   ============================================================ */
+const pickedDates=new Set();
+const pickedSlots=new Set();
+const SLOTS=['오전 10시','오전 11시','오후 1시','오후 2시','오후 4시','저녁 7시'];
+
+function buildCalendar(){
+  const cal=document.getElementById('apCal');
+  if(!cal||cal.dataset.built)return;
+  const days=['일','월','화','수','목','금','토'];
+  let html=days.map(d=>`<div class="cal-h">${d}</div>`).join('');
+  // 다음 달 가까운 4주를 가상으로: 오늘 기준 +3일부터 28칸
+  const today=new Date();
+  const start=new Date(today); start.setDate(today.getDate()+3);
+  // 시작 요일만큼 빈칸
+  const lead=start.getDay();
+  for(let i=0;i<lead;i++) html+=`<div class="cal-d empty"></div>`;
+  for(let i=0;i<28;i++){
+    const d=new Date(start); d.setDate(start.getDate()+i);
+    const dd=d.getDate();
+    const key=(d.getMonth()+1)+'/'+dd;
+    html+=`<div class="cal-d" data-k="${key}" onclick="toggleDate(this,'${key}')">${dd}</div>`;
+  }
+  cal.innerHTML=html;
+  cal.dataset.built='1';
+}
+function toggleDate(el,key){
+  if(pickedDates.has(key)){pickedDates.delete(key);el.classList.remove('on');}
+  else{pickedDates.add(key);el.classList.add('on');}
+}
+function buildSlots(){
+  const wrap=document.getElementById('apSlots');
+  if(!wrap||wrap.dataset.built)return;
+  wrap.innerHTML=SLOTS.map(s=>`<div class="slot" onclick="toggleSlot(this,'${s}')">${s}</div>`).join('');
+  wrap.dataset.built='1';
+}
+function toggleSlot(el,s){
+  if(pickedSlots.has(s)){pickedSlots.delete(s);el.classList.remove('on');}
+  else{pickedSlots.add(s);el.classList.add('on');}
+}
+function submitApply(){
+  const name=document.getElementById('apName').value.trim();
+  const tel=document.getElementById('apTel').value.trim();
+  const a1=document.getElementById('apAgree1').checked;
+  const a2=document.getElementById('apAgree2').checked;
+  if(!name){toast('이름을 입력해주세요');return;}
+  if(!tel||tel.replace(/[^0-9]/g,'').length<10){toast('연락처를 정확히 입력해주세요');return;}
+  if(pickedDates.size===0){toast('가능한 날짜를 하나 이상 골라주세요');return;}
+  if(pickedSlots.size===0){toast('가능한 시간대를 하나 이상 골라주세요');return;}
+  if(!a1||!a2){toast('필수 동의 항목을 확인해주세요');return;}
+  const t=TYPES[resultCode]||TYPES.INFP;
+  document.getElementById('doneMsg').innerHTML=
+    `<b>${name}</b>님, <em style="color:var(--sage-deep);font-style:normal">${t.name.replace(/<br>/g,' ')}</em>의 결을 함께 읽을 시간을 신청해주셔서 고마워요. 선택하신 일정으로 확인 후 입력하신 번호로 개별 안내드릴게요.`;
+  go('done');
+}
+function resetAll(){
+  resetChat();
+  pickedDates.clear(); pickedSlots.clear();
+  const n=document.getElementById('apName'), te=document.getElementById('apTel');
+  if(n)n.value=''; if(te)te.value='';
+  const a1=document.getElementById('apAgree1'),a2=document.getElementById('apAgree2');
+  if(a1)a1.checked=false; if(a2)a2.checked=false;
+  document.querySelectorAll('#apCal .cal-d.on,#apSlots .slot.on').forEach(e=>e.classList.remove('on'));
+  go('landing');
+}
+</script>
+</body>
+</html>
