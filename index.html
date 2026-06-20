@@ -737,7 +737,6 @@
           </div>
         </div>
         <button class="sbtn" style="background:#FEE500;color:#191600" onclick="openSheet('kakao')">카카오톡으로 공유</button>
-        <button class="sbtn" style="background:var(--sage-deep);color:#F4F1E8" onclick="openSheet('insta')">인스타 스토리로 공유</button>
         <button class="sbtn" style="background:var(--card);border:1px solid var(--line);color:var(--ink)" onclick="openSheet('link')">결과 링크 복사</button>
         <p class="sfoot">결이 비슷한 친구를 찾아보세요.</p>
       </div>
@@ -1774,13 +1773,6 @@ function openSheet(channel){
   // 카카오는 fallbackShare 내부에서 (SDK 공유창 → 네이티브 → 복사) 순으로 처리
   if(channel==='kakao'){ fallbackShare(channel,full); return; }
 
-  // 인스타: 모바일 네이티브 공유 우선
-  if(channel==='insta' && navigator.share){
-    navigator.share({title:'결 · GYEOL', text:txt, url:RESULT_URL})
-      .then(()=>toast('공유 완료'))
-      .catch(()=>fallbackShare(channel,full));
-    return;
-  }
   fallbackShare(channel,full);
 }
 
@@ -1812,16 +1804,6 @@ function fallbackShare(channel,full){
     copyText(full).finally(()=>{
       showSheet({title:'카카오톡으로 공유',body:full,btn:'#FEE500',btc:'#191600',
         hint:'문구가 복사됐어요. 카카오톡을 열어 채팅방에 붙여넣기 하세요.'});
-    });
-    return;
-  }
-  if(channel==='insta'){
-    // 인스타는 외부 URL 직접 공유 API가 없음 → 문구 복사 후 인스타 열기
-    copyText(full).finally(()=>{
-      const ok=openWin('https://www.instagram.com/');
-      if(ok) toast('문구를 복사했어요. 스토리에 붙여넣기 하세요');
-      else showSheet({title:'인스타 스토리로 공유',body:full,btn:'#5C6A4E',btc:'#F4F1E8',
-        hint:'문구가 복사됐어요. 인스타그램을 열어 스토리에 붙여넣기 하세요.'});
     });
     return;
   }
