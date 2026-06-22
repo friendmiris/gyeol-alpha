@@ -580,6 +580,8 @@
 
   /* PC (1024px 이상) : 최대 1200px까지 사용 + 2열 그리드 */
   @media (min-width:1024px){
+    /* PC에서 전체를 90% 크기로 — 컨트롤+휠 90%와 같은 비율 */
+    body{zoom:0.9;}
     body{padding:44px 32px 70px;}
     .device{
       max-width:1200px;
