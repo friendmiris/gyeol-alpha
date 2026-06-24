@@ -1114,7 +1114,6 @@
         <label class="chk"><input type="checkbox" id="apAgree1"><span>개인정보(이름·연락처) 수집 및 퍼실리테이션 안내 연락에 동의합니다. <em>(필수)</em></span></label>
         <label class="chk"><input type="checkbox" id="apAgree2"><span>본 퍼실리테이션은 자기이해·성장을 돕는 코칭 콘텐츠이며, 의학적 진단·치료가 아님을 이해했습니다. <em>(필수)</em></span></label>
         <button class="btn" style="margin-top:18px" onclick="submitApply()">신청 완료하기</button>
-        <p class="ses-disc">위기 상황이거나 즉각적인 도움이 필요하면 정신건강 위기상담 ☎ 1577-0199로 연락해요.</p>
       </div>
     </div>
   </section>
@@ -1183,9 +1182,13 @@ function go(name){
   if(name==='decode') runDecode();
   if(name==='result') renderResult();
   if(name==='apply'){ buildCalendar(); buildSlots(); }
+  // 화면 전환 시 항상 맨 위에서 시작
   device.scrollTop=0;
   const res=device.querySelector('.res'); if(res) res.scrollTop=0;
   const ses=document.querySelector('.screen.active .ses'); if(ses) ses.scrollTop=0;
+  const active=document.querySelector('.screen.active'); if(active) active.scrollTop=0;
+  window.scrollTo(0,0);
+  requestAnimationFrame(()=>{ window.scrollTo(0,0); device.scrollTop=0; if(active) active.scrollTop=0; });
 }
 
 /* ============================================================
