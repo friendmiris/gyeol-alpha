@@ -393,9 +393,9 @@
   .profile-head{display:flex;align-items:center;justify-content:space-between;padding:16px 0 4px;}
   .ph-tag{font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--sage-deep);}
   .ph-dot{width:8px;height:8px;border-radius:50%;background:var(--sage);box-shadow:0 0 0 4px var(--sage-mist);}
-  #profile h5{font-family:'Noto Serif KR',serif;font-size:21px;font-weight:700;color:var(--ink);
-    margin:18px 0 12px;letter-spacing:-.01em;}
-  #profile p{font-size:19.5px;color:#45413A;line-height:2.0;margin-bottom:14px;letter-spacing:.003em;}
+  #profile h5{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:700;color:var(--ink);
+    margin:16px 0 12px;letter-spacing:-.01em;line-height:1.5;}
+  #profile p{font-size:15.5px;color:#45413A;line-height:1.75;margin-bottom:13px;letter-spacing:.003em;}
   #profile p b{color:var(--sage-deep);font-weight:500;}
   #profile p em{font-family:'Noto Serif KR',serif;font-style:normal;color:var(--clay);font-weight:500;}
 
@@ -1182,13 +1182,17 @@ function go(name){
   if(name==='decode') runDecode();
   if(name==='result') renderResult();
   if(name==='apply'){ buildCalendar(); buildSlots(); }
-  // 화면 전환 시 항상 맨 위에서 시작
-  device.scrollTop=0;
-  const res=device.querySelector('.res'); if(res) res.scrollTop=0;
-  const ses=document.querySelector('.screen.active .ses'); if(ses) ses.scrollTop=0;
-  const active=document.querySelector('.screen.active'); if(active) active.scrollTop=0;
-  window.scrollTo(0,0);
-  requestAnimationFrame(()=>{ window.scrollTo(0,0); device.scrollTop=0; if(active) active.scrollTop=0; });
+  // 화면 전환 시 항상 맨 위에서 시작 — 모든 스크롤 컨테이너를 초기화
+  function resetScroll(){
+    window.scrollTo(0,0);
+    document.documentElement.scrollTop=0;
+    document.body.scrollTop=0;
+    if(device) device.scrollTop=0;
+    document.querySelectorAll('.res,.ses,.thread,.screen').forEach(el=>{ el.scrollTop=0; });
+  }
+  resetScroll();
+  requestAnimationFrame(resetScroll);
+  setTimeout(resetScroll,40);
 }
 
 /* ============================================================
