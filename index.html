@@ -1424,6 +1424,8 @@ function analyzeWithAI(text, question){
     })
     .then(r=>r.json())
     .then(d=>{
+      console.log('[결 AI 분석]', d);   // 진단용: F12 콘솔에서 확인 가능
+      window.__lastAI = d;              // 진단용: 콘솔에서 window.__lastAI 로 확인
       if(d && d.scores){
         // AI 분석은 문맥을 정확히 읽으므로 가중치 2배 적용 (±3 → 최대 ±6)
         for(const k of ['O','C','E','A','N']){
