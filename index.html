@@ -1421,9 +1421,10 @@ function analyzeWithAI(text, question){
     .then(r=>r.json())
     .then(d=>{
       if(d && d.scores){
+        // AI 분석은 문맥을 정확히 읽으므로 가중치 2배 적용 (±3 → 최대 ±6)
         for(const k of ['O','C','E','A','N']){
           const s=parseInt(d.scores[k],10);
-          if(!isNaN(s)) tally[k]+=s;
+          if(!isNaN(s)) tally[k]+=s*2;
         }
       }
     })
@@ -1653,16 +1654,17 @@ function dimDetail(key,score){
 }
 
 // tally(-) ~ (+)를 0~100으로 변환
-function norm(v,max){ return Math.round( ((v+max)/(2*max))*100 ); }
+function norm(v,max){ const p=Math.round(((v+max)/(2*max))*100); return Math.max(0,Math.min(100,p)); }
 
 function computeDims(){
-  // tally(O/C/E/A/N)를 0~100으로 변환. 각 축 최대 누적치 기준 정규화.
+  // tally(O/C/E/A/N)를 0~100으로 변환.
+  // 선택지(문항당 ±2)와 AI분석(문항당 ±3)이 함께 쌓이므로 누적 최대를 넉넉히 잡음.
   dimScores={
-    O: norm(tally.O, 9),
-    C: norm(tally.C, 10),
-    E: norm(tally.E, 11),
-    A: norm(tally.A, 9),
-    N: norm(tally.N, 11),
+    O: norm(tally.O, 45),
+    C: norm(tally.C, 45),
+    E: norm(tally.E, 45),
+    A: norm(tally.A, 45),
+    N: norm(tally.N, 45),
   };
 }
 function clamp(v){return Math.max(8,Math.min(96,v));}
