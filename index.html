@@ -1201,154 +1201,154 @@ function go(name){
    ============================================================ */
 const AXES=['energy','focus','decide','rhythm']; // 내부 4축
 const qa=[
-  // ── 1~5 : 에너지 방향 (E/I) — 상황/투사형 ──
+  // 빅5(OCEAN) 상황판단형 20문항. 각 선택지가 5개 차원에 가중치를 가짐.
+  // O개방성 C성실성 E외향성 A우호성 N신경성
   {
-    q:'안녕하세요, 결이에요. 정답은 없어요. 그냥 먼저 떠오르는 걸 골라주세요.<br>긴 하루였어요. 집에 가는 길, 머릿속에 가장 먼저 그려지는 장면은?',
+    q:'안녕하세요, 결이에요. 정답은 없어요. 먼저 마음이 가는 쪽을 골라주세요.<br>주말이 통째로 비었어요. 더 끌리는 쪽은?',
     options:[
-      {t:'불 꺼진 조용한 방, 혼자 있는 나', s:'', w:{energy:-2}},
-      {t:'누군가에게 전화 거는 나', s:'', w:{energy:+2}},
+      {t:'집에서 좋아하는 걸 깊게 파고든다', s:'', w:{O:+1,E:-2}},
+      {t:'친구들 불러 새로운 곳에 가본다', s:'', w:{E:+2,O:+1}},
     ]
   },
   {
-    q:'낯선 도시에 혼자 도착했어요. 광장에 사람들이 북적여요.<br>이 장면에서 어떤 느낌이 먼저 드나요?',
+    q:'새 프로젝트가 시작됐어요. 당신의 첫 행동은?',
     options:[
-      {t:'살짝 압도돼서 조용한 골목으로 빠지고 싶다', s:'', w:{energy:-2}},
-      {t:'설레서 사람들 속으로 들어가고 싶다', s:'', w:{energy:+2}},
+      {t:'전체 일정과 할 일을 먼저 정리한다', s:'', w:{C:+2}},
+      {t:'일단 떠오르는 것부터 손대본다', s:'', w:{C:-2,O:+1}},
     ]
   },
   {
-    q:'머릿속에 떠오른 생각 하나가 있어요. 그걸 어떻게 다루는 편이에요?',
+    q:'팀원이 마감을 펑크냈어요. 당신은?',
     options:[
-      {t:'한참 혼자 굴려보다가 정리되면 꺼낸다', s:'', w:{energy:-2}},
-      {t:'일단 누구한테 말하면서 정리가 된다', s:'', w:{energy:+2}},
+      {t:'내가 그 몫까지 메운다', s:'', w:{A:+2,N:+1}},
+      {t:'팀에 알리고 역할을 다시 나눈다', s:'', w:{C:+2,E:+1}},
+      {t:'일단 내 할 일부터 끝낸다', s:'', w:{C:+2,A:-1}},
+      {t:'그 사람한테 직접 짚는다', s:'', w:{E:+1,A:-2}},
     ]
   },
   {
-    q:'주말 내내 아무 약속도 잡지 않았어요. 일요일 밤, 기분이 어때요?',
+    q:'처음 가는 모임에 도착했어요. 머릿속 느낌은?',
     options:[
-      {t:'알차게 잘 쉬었다, 충전됐다', s:'', w:{energy:-2}},
-      {t:'좀 심심했다, 누구라도 만날 걸 그랬다', s:'', w:{energy:+2}},
+      {t:'살짝 긴장돼서 아는 사람을 찾는다', s:'', w:{N:+2,E:-1}},
+      {t:'새 얼굴들이 궁금해 먼저 말 건다', s:'', w:{E:+2,N:-1}},
     ]
   },
   {
-    q:'한 장면을 상상해봐요. 파티가 한창인데 당신은 어디에 있나요?',
+    q:'친구가 고민을 길게 털어놨어요. 다 듣고 난 뒤?',
     options:[
-      {t:'마음 맞는 한두 명과 구석에서 깊은 얘기', s:'', w:{energy:-1}},
-      {t:'여기저기 옮겨다니며 여러 사람과 인사', s:'', w:{energy:+2}},
-    ]
-  },
-  // ── 6~10 : 인식 방식 (S/N) — 이미지/은유형 ──
-  {
-    q:'잠깐 그림 하나를 떠올려볼게요.<br>나무 한 그루가 서 있어요. 당신은 무엇에 먼저 눈이 가나요?',
-    options:[
-      {t:'나뭇결, 잎의 개수 같은 구체적인 모습', s:'', w:{focus:-2}},
-      {t:'이 나무가 품고 있을 세월과 이야기', s:'', w:{focus:+2}},
+      {t:'‘그럼 이렇게 해봐’ 해결책을 준다', s:'', w:{A:-1,C:+1}},
+      {t:'‘많이 힘들었겠다’ 마음부터 살핀다', s:'', w:{A:+2}},
     ]
   },
   {
-    q:'"바다" 라는 단어를 들었어요. 머릿속에 뭐가 떠오르나요?',
+    q:'여행을 계획한다면, 더 나다운 쪽은?',
     options:[
-      {t:'파도 소리, 짠내, 발에 닿는 모래 — 감각', s:'', w:{focus:-2}},
-      {t:'자유, 그리움, 어디론가 떠나고 싶음 — 의미', s:'', w:{focus:+2}},
+      {t:'동선·맛집까지 촘촘하게 정리', s:'', w:{C:+2,O:-1}},
+      {t:'큰 것만 정하고 즉흥에 맡긴다', s:'', w:{C:-2,O:+1}},
     ]
   },
   {
-    q:'처음 가보는 길을 걷고 있어요. 당신의 머릿속은?',
+    q:'예상 못 한 일이 생겨 계획이 틀어졌어요.',
     options:[
-      {t:'간판·골목 번호를 보며 길을 외운다', s:'', w:{focus:-2}},
-      {t:'‘이 동네 살면 어떨까’ 상상이 번진다', s:'', w:{focus:+2}},
+      {t:'짜증나고 불안해진다', s:'', w:{N:+2}},
+      {t:'뭐 어때, 하고 받아들인다', s:'', w:{N:-2,O:+1}},
     ]
   },
   {
-    q:'누가 "요즘 어때?" 하고 물었어요. 당신의 대답은 주로?',
+    q:'회의에서 내 의견이 반대에 부딪혔어요.',
     options:[
-      {t:'있었던 일을 사실대로 차근차근', s:'', w:{focus:-1}},
-      {t:'‘요즘 이런 생각이 들어’ 하고 흐름을', s:'', w:{focus:+2}},
+      {t:'분위기를 봐서 한발 물러선다', s:'', w:{A:+2,E:-1}},
+      {t:'근거를 들어 끝까지 설득한다', s:'', w:{E:+2,A:-1}},
     ]
   },
   {
-    q:'구름을 올려다봤어요. 어떤 생각이 드나요?',
+    q:'자유 시간에 더 하고 싶은 건?',
     options:[
-      {t:'오늘 비 오려나, 날씨를 가늠한다', s:'', w:{focus:-2}},
-      {t:'무슨 모양 같다, 뭔가 닮았다고 떠올린다', s:'', w:{focus:+2}},
-    ]
-  },
-  // ── 11~15 : 판단 기준 (T/F) — 딜레마/투사형 ──
-  {
-    q:'절반 왔어요. 잘하고 있어요.<br>친구가 명백히 잘못된 선택을 하려 해요. 당신 안에서 먼저 드는 마음은?',
-    options:[
-      {t:'‘그건 아닌데’, 뭐가 맞는지 짚어주고 싶다', s:'', w:{decide:-2}},
-      {t:'‘얼마나 힘들었으면’, 마음부터 헤아린다', s:'', w:{decide:+2}},
+      {t:'안 가본 분야의 책·다큐를 본다', s:'', w:{O:+2}},
+      {t:'익숙하고 편한 걸 반복한다', s:'', w:{O:-2,N:-1}},
     ]
   },
   {
-    q:'영화를 봤어요. 한 인물이 규칙을 어기고 친구를 구했어요. 당신의 반응은?',
+    q:'친구가 갑자기 “지금 나올래?” 했어요.',
     options:[
-      {t:'마음은 알겠지만 규칙은 규칙이지', s:'', w:{decide:-2}},
-      {t:'그럴 수밖에 없었겠다, 이해된다', s:'', w:{decide:+2}},
+      {t:'좋아! 바로 준비한다', s:'', w:{E:+2,C:-1}},
+      {t:'오늘은 좀… 다음에 보자', s:'', w:{E:-2,C:+1}},
     ]
   },
   {
-    q:'누군가 당신에게 고민을 길게 털어놨어요. 다 듣고 난 뒤 당신은?',
+    q:'절반 왔어요. 잘하고 있어요.<br>일을 할 때 나는?',
     options:[
-      {t:'‘그럼 이렇게 해보면?’ 해결책이 떠오른다', s:'', w:{decide:-2}},
-      {t:'‘많이 답답했겠다’ 감정이 먼저 닿는다', s:'', w:{decide:+2}},
+      {t:'끝까지 꼼꼼히 마무리해야 직성이 풀린다', s:'', w:{C:+2}},
+      {t:'80%면 충분, 다음으로 넘어간다', s:'', w:{C:-2,N:-1}},
     ]
   },
   {
-    q:'두 칭찬 중 더 듣고 싶은 쪽을 골라요. 솔직하게.',
+    q:'모르는 사람들과 한 공간에 오래 있어야 해요.',
     options:[
-      {t:'"너 진짜 똑똑하다, 정확해"', s:'', w:{decide:-1}},
-      {t:'"너 정말 따뜻한 사람이야"', s:'', w:{decide:+2}},
+      {t:'에너지가 빠지고 빨리 혼자 있고 싶다', s:'', w:{E:-2,N:+1}},
+      {t:'오히려 활기가 돈다', s:'', w:{E:+2}},
     ]
   },
   {
-    q:'팀에서 한 사람 때문에 일이 늦어졌어요. 당신 머릿속 목소리는?',
+    q:'내키지 않는 부탁을 받았어요.',
     options:[
-      {t:'원인을 짚고 다음엔 안 그러게 정리하자', s:'', w:{decide:-2}},
-      {t:'무슨 사정이 있었나, 먼저 물어보자', s:'', w:{decide:+2}},
-    ]
-  },
-  // ── 16~20 : 생활 양식 (J/P) — 상황/투사형 ──
-  {
-    q:'거의 다 왔어요.<br>완벽하게 짜둔 하루 계획이 아침부터 어그러졌어요. 첫 느낌은?',
-    options:[
-      {t:'아, 하루가 꼬였다 (불편함이 먼저)', s:'', w:{rhythm:-2}},
-      {t:'뭐 어때, 그날그날이지 (대수롭지 않다)', s:'', w:{rhythm:+2}},
+      {t:'거절하면 미안해서 결국 들어준다', s:'', w:{A:+2,N:+1}},
+      {t:'안 되는 건 분명히 거절한다', s:'', w:{A:-1,N:-1}},
     ]
   },
   {
-    q:'텅 빈 노트 한 권이 생겼어요. 당신은 어떻게 쓰나요?',
+    q:'새로운 아이디어를 들었을 때 나는?',
     options:[
-      {t:'목차랑 규칙을 정하고 깔끔하게 쓴다', s:'', w:{rhythm:-2}},
-      {t:'그때그때 떠오르는 대로 자유롭게 쓴다', s:'', w:{rhythm:+2}},
+      {t:'‘재밌다, 더 파보고 싶다’', s:'', w:{O:+2}},
+      {t:'‘현실적으로 될까?’ 먼저 따진다', s:'', w:{O:-1,C:+1}},
     ]
   },
   {
-    q:'여행 영상을 본다면, 어느 쪽에 더 끌려요?',
+    q:'하루를 마무리할 때, 마음에 더 남는 건?',
     options:[
-      {t:'동선·맛집까지 완벽하게 짠 알찬 일정', s:'', w:{rhythm:-2}},
-      {t:'발길 닿는 대로 다니는 무계획 여행', s:'', w:{rhythm:+2}},
+      {t:'오늘 못 한 일, 실수한 장면', s:'', w:{N:+2,C:+1}},
+      {t:'좋았던 순간, 내일의 기대', s:'', w:{N:-2,E:+1}},
     ]
   },
   {
-    q:'책상 위를 떠올려봐요. 평소 당신의 책상은?',
+    q:'거의 다 왔어요.<br>갈등 상황에서 나는?',
     options:[
-      {t:'정돈돼 있어야 마음이 놓인다', s:'', w:{rhythm:-1}},
-      {t:'좀 어질러져도 내 나름의 질서가 있다', s:'', w:{rhythm:+2}},
+      {t:'마음이 불편해 빨리 풀고 싶다', s:'', w:{A:+1,N:+2}},
+      {t:'할 말은 하고 넘어가는 편', s:'', w:{E:+1,A:-1}},
     ]
   },
   {
-    q:'마지막이에요. 인생이 한 편의 여행이라면, 당신이 더 끌리는 문장은?',
+    q:'책상이나 방 상태는 보통?',
     options:[
-      {t:'‘지도를 펴고, 한 걸음씩 또렷하게’', s:'', w:{rhythm:-1,decide:-1}},
-      {t:'‘길은 걷다 보면 생기는 거야’', s:'', w:{rhythm:+2,focus:+1}},
+      {t:'정돈돼 있어야 마음이 편하다', s:'', w:{C:+2}},
+      {t:'좀 어질러져도 내 나름 질서가 있다', s:'', w:{C:-2,O:+1}},
+    ]
+  },
+  {
+    q:'칭찬을 듣는다면 더 기쁜 쪽은?',
+    options:[
+      {t:'“너 진짜 꼼꼼하고 믿음직해”', s:'', w:{C:+2}},
+      {t:'“너랑 있으면 마음이 편해”', s:'', w:{A:+2}},
+    ]
+  },
+  {
+    q:'큰 결정을 앞두고 나는?',
+    options:[
+      {t:'정보를 모으고 차근차근 따진다', s:'', w:{C:+1,O:+1}},
+      {t:'결국 마음이 가는 대로 정한다', s:'', w:{C:-1,A:+1}},
+    ]
+  },
+  {
+    q:'마지막이에요. 요즘의 나를 한마디로 하면?',
+    options:[
+      {t:'생각이 많고 쉽게 흔들린다', s:'', w:{N:+2}},
+      {t:'대체로 단단하고 평온하다', s:'', w:{N:-2}},
     ]
   },
 ];
 
 let turn=0;
-const tally={energy:0,focus:0,decide:0,rhythm:0};
+const tally={O:0,C:0,E:0,A:0,N:0};
 
 function addRow(text,me){
   const thread=document.getElementById('thread');
@@ -1401,11 +1401,35 @@ function sendTyped(){
   if(!v)return;
   addRow(v,true);
   inp.value='';
-  // 자유 입력은 중립 처리 (간단한 키워드 가중)
-  const low=v.toLowerCase();
-  if(/혼자|조용|쉬|집/.test(v)) tally.energy-=1;
-  if(/사람|친구|만나|얘기/.test(v)) tally.energy+=1;
+  const q = (qa[turn] && qa[turn].q) ? qa[turn].q.replace(/<br>/g,' ') : '';
+  // 진짜 AI 분석: 서버(/api/analyze)로 보내 빅5 점수를 받아 합산.
+  // 응답을 기다리지 않고 흐름은 바로 진행(advance), 점수는 도착하면 더해짐.
+  analyzeWithAI(v, q);
   advance();
+}
+
+// 사용자가 직접 쓴 답변을 AI(Gemini)로 분석해 빅5 점수에 합산
+let aiPending=0;   // 진행 중인 AI 분석 개수
+function analyzeWithAI(text, question){
+  aiPending++;
+  try{
+    fetch('/api/analyze', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({ text:text, question:question })
+    })
+    .then(r=>r.json())
+    .then(d=>{
+      if(d && d.scores){
+        for(const k of ['O','C','E','A','N']){
+          const s=parseInt(d.scores[k],10);
+          if(!isNaN(s)) tally[k]+=s;
+        }
+      }
+    })
+    .catch(()=>{})
+    .finally(()=>{ aiPending--; });
+  }catch(e){ aiPending--; }
 }
 function advance(){
   turn++;
@@ -1419,7 +1443,16 @@ function advance(){
     setTimeout(()=>{
       hideTyping();
       addRow('충분히 들었어요. 이제 당신의 결을 짜볼게요.');
-      setTimeout(()=>go('decode'),1100);
+      // 진행 중인 AI 분석이 있으면 끝날 때까지 잠깐 대기(최대 3초)
+      let waited=0;
+      (function waitAI(){
+        if(aiPending>0 && waited<3000){
+          waited+=200;
+          setTimeout(waitAI,200);
+        }else{
+          setTimeout(()=>go('decode'),700);
+        }
+      })();
     },900);
   }
 }
@@ -1467,17 +1500,14 @@ function runDecode(){
    축: energy(I/E) focus(S/N) decide(T/F) rhythm(C/V)
    C=Composed(조율·계획) V=Versatile(즉흥·변화)
    ============================================================ */
-// 8개 결 차원 (세부 항목, 사용자가 슬라이더로 보정)
+// 빅5(OCEAN) 5개 차원 — 검증된 성격 모델 기반
 let dimScores={};   // 0~100
 const DIMS=[
-  {key:'introspect', nm:'내면 탐색', en:'Introspection', abbr:'I', lo:'외부 지향', hi:'내면 지향', axis:'energy', inv:false},
-  {key:'expression', nm:'감정 표현', en:'Expression', abbr:'X', lo:'담아두기', hi:'드러내기', axis:'energyExp'},
-  {key:'imagination',nm:'상상·직관', en:'Intuition', abbr:'N', lo:'현실 감각', hi:'직관·상상', axis:'focus'},
-  {key:'structure',  nm:'구조화', en:'Structure', abbr:'S', lo:'유연하게', hi:'체계적으로', axis:'rhythmInv'},
-  {key:'logic',      nm:'논리 우선', en:'Logic', abbr:'L', lo:'마음 우선', hi:'논리 우선', axis:'decideInv'},
-  {key:'empathy',    nm:'공감 감수성', en:'Empathy', abbr:'E', lo:'담백함', hi:'섬세함', axis:'decide'},
-  {key:'adventure',  nm:'변화 수용', en:'Openness', abbr:'O', lo:'안정 선호', hi:'변화 선호', axis:'rhythm'},
-  {key:'resilience', nm:'정서 회복', en:'Resilience', abbr:'R', lo:'예민함', hi:'단단함', axis:'resil'},
+  {key:'O', nm:'개방성', en:'Openness', abbr:'O', lo:'안정·익숙함', hi:'호기심·상상'},
+  {key:'C', nm:'성실성', en:'Conscientiousness', abbr:'C', lo:'유연·즉흥', hi:'계획·체계'},
+  {key:'E', nm:'외향성', en:'Extraversion', abbr:'E', lo:'조용한 충전', hi:'사교적 활력'},
+  {key:'A', nm:'우호성', en:'Agreeableness', abbr:'A', lo:'독립·담백', hi:'배려·공감'},
+  {key:'N', nm:'신경성', en:'Neuroticism', abbr:'N', lo:'평온·단단함', hi:'섬세·민감'},
 ];
 
 /* ---- 차원 상세 해석 사전: 점수 구간별 핵심성향/일·커리어/관계/성장/공감상황 ---- */
@@ -1611,6 +1641,13 @@ const DIM_DETAIL={
     }
   }
 };
+// 빅5 키(O/C/E/A/N)로 기존 해석을 매핑. E·N은 방향이 반대라 high/low를 뒤집어 연결.
+DIM_DETAIL.O = DIM_DETAIL.adventure;                                  // 개방성 = 변화수용
+DIM_DETAIL.C = DIM_DETAIL.structure;                                  // 성실성 = 구조화
+DIM_DETAIL.A = DIM_DETAIL.empathy;                                    // 우호성 = 공감
+DIM_DETAIL.E = { high: DIM_DETAIL.introspect.low, low: DIM_DETAIL.introspect.high }; // 외향성 = 내향의 반대
+DIM_DETAIL.N = { high: DIM_DETAIL.resilience.low, low: DIM_DETAIL.resilience.high }; // 신경성 = 회복탄력의 반대
+
 function dimDetail(key,score){
   return score>=50? DIM_DETAIL[key].high : DIM_DETAIL[key].low;
 }
@@ -1619,26 +1656,23 @@ function dimDetail(key,score){
 function norm(v,max){ return Math.round( ((v+max)/(2*max))*100 ); }
 
 function computeDims(){
-  const e=tally.energy, f=tally.focus, d=tally.decide, r=tally.rhythm;
+  // tally(O/C/E/A/N)를 0~100으로 변환. 각 축 최대 누적치 기준 정규화.
   dimScores={
-    introspect: norm(-e,9),                 // 내향일수록 높음
-    expression: clamp(norm(e,9)+ (d<0?6:-6)), // 외향+감정표현
-    imagination:norm(f,9),
-    structure:  norm(-r,9),                 // 계획적일수록 높음 → J
-    logic:      norm(-d,9),
-    empathy:    norm(d,9),
-    adventure:  norm(r,9),
-    resilience: clamp(56 + (-e*2) + (-d*1)), // 내향·논리형이 약간 단단하게(연출)
+    O: norm(tally.O, 9),
+    C: norm(tally.C, 10),
+    E: norm(tally.E, 11),
+    A: norm(tally.A, 9),
+    N: norm(tally.N, 11),
   };
 }
 function clamp(v){return Math.max(8,Math.min(96,v));}
 
 function deriveCode(){
-  // 슬라이더 보정 후 dimScores 기준으로 표준 MBTI 코드 산출
-  const E = dimScores.introspect>=50 ? 'I':'E';   // 내면 탐색↑ = I
-  const N = dimScores.imagination>=50 ? 'N':'S';  // 상상·직관↑ = N
-  const F = dimScores.empathy>=50 ? 'F':'T';      // 공감 감수성↑ = F
-  const J = dimScores.structure>=50 ? 'J':'P';    // 구조화↑ = J, 유연↑ = P
+  // 빅5 점수로 MBTI 유사 코드를 추론 (보조 표시용)
+  const E = dimScores.E>=50 ? 'E':'I';   // 외향성↑ = E
+  const N = dimScores.O>=50 ? 'N':'S';   // 개방성↑ = 직관(N)
+  const F = dimScores.A>=50 ? 'F':'T';   // 우호성↑ = 감정(F)
+  const J = dimScores.C>=50 ? 'J':'P';   // 성실성↑ = 계획(J)
   return E+N+F+J;
 }
 
@@ -1684,7 +1718,49 @@ function dimRead(key,score){
     adventure:'익숙하고 예측 가능한 것에서 안정을 얻어요. 변화 앞에선 한 박자 신중해져요.',
     resilience:'마음의 결이 섬세해서 자극에 깊게 반응해요. 그만큼 풍부하게 느끼는 사람이에요.',
   };
+  // 빅5 키 매핑 (E·N은 방향 반대)
+  high.O=high.adventure; low.O=low.adventure;
+  high.C=high.structure; low.C=low.structure;
+  high.A=high.empathy;   low.A=low.empathy;
+  high.E=low.introspect; low.E=high.introspect;   // 외향=내향의 반대
+  high.N=low.resilience; low.N=high.resilience;   // 신경성=회복의 반대
   return score>=50? high[key]: low[key];
+}
+
+/* 빅5 점수로 감성 이름·한줄·태그·희귀도 생성 */
+function big5Profile(){
+  const s=dimScores;
+  const arr=[
+    {k:'O',v:s.O,hi:s.O>=50},{k:'C',v:s.C,hi:s.C>=50},
+    {k:'E',v:s.E,hi:s.E>=50},{k:'A',v:s.A,hi:s.A>=50},
+    {k:'N',v:s.N,hi:s.N>=50},
+  ].sort((a,b)=>Math.abs(b.v-50)-Math.abs(a.v-50));
+  const top=arr[0], second=arr[1];
+  const word={
+    O:{hi:'호기심 많은',lo:'차분한'}, C:{hi:'단단히 설계하는',lo:'유연한'},
+    E:{hi:'햇살 같은',lo:'고요한'}, A:{hi:'따뜻한',lo:'담백한'}, N:{hi:'섬세한',lo:'평온한'},
+  };
+  const noun={
+    O:{hi:'탐험가',lo:'지킴이'}, C:{hi:'설계자',lo:'방랑자'},
+    E:{hi:'연결자',lo:'사색가'}, A:{hi:'조율자',lo:'독립가'}, N:{hi:'감정가',lo:'안정가'},
+  };
+  const name=`${word[top.k][top.hi?'hi':'lo']} ${noun[second.k][second.hi?'hi':'lo']}`;
+  const oneMap={
+    O:{hi:'새로운 생각과 가능성에 먼저 마음이 열리는 사람.',lo:'익숙함 속에서 안정을 찾는 사람.'},
+    C:{hi:'계획과 책임으로 하루를 단단히 세우는 사람.',lo:'흐름에 몸을 맡길 줄 아는 사람.'},
+    E:{hi:'사람들 사이에서 활기를 얻는 사람.',lo:'고요 속에서 깊어지는 사람.'},
+    A:{hi:'곁의 마음을 먼저 헤아리는 사람.',lo:'감정에 거리를 둘 줄 아는 사람.'},
+    N:{hi:'세상을 풍부하고 예민하게 느끼는 사람.',lo:'쉽게 흔들리지 않는 단단한 사람.'},
+  };
+  const one=oneMap[top.k][top.hi?'hi':'lo'];
+  const tagMap={
+    O:{hi:'#개방적',lo:'#안정적'},C:{hi:'#계획적',lo:'#유연함'},
+    E:{hi:'#사교적',lo:'#차분함'},A:{hi:'#공감력',lo:'#독립적'},N:{hi:'#섬세함',lo:'#평온함'},
+  };
+  const chips=[tagMap[top.k][top.hi?'hi':'lo'], tagMap[second.k][second.hi?'hi':'lo'], tagMap[arr[2].k][arr[2].hi?'hi':'lo']];
+  const intensity=Math.abs(top.v-50)+Math.abs(second.v-50);
+  const rare=(Math.max(3, 22 - Math.round(intensity/8))).toFixed(1);
+  return {name, one, chips, rare};
 }
 
 /* 전체 AI 프로파일 (HEXACO '전체 프로파일' 스타일 장문) */
@@ -1942,16 +2018,17 @@ function buildEmblem(code){
 
 function paintResult(){
   const t=TYPES[resultCode]||TYPES.INFP;
+  const bp=big5Profile();   // 빅5 기반 감성 이름/한줄/태그/희귀도
 
-  // hero
-  document.getElementById('rCode').textContent=resultCode;
-  document.getElementById('rName').innerHTML=t.name;
-  document.getElementById('rOne').textContent=t.one;
-  document.getElementById('rChips').innerHTML=t.chips.map(c=>`<span class="chip">${c}</span>`).join('');
-  document.getElementById('rRare').textContent='전체의 '+t.rare+'%';
+  // hero — 빅5 이름이 메인, MBTI 코드는 보조 표시
+  document.getElementById('rCode').textContent='참고 유형 · '+resultCode;
+  document.getElementById('rName').innerHTML=bp.name;
+  document.getElementById('rOne').textContent=bp.one;
+  document.getElementById('rChips').innerHTML=bp.chips.map(c=>`<span class="chip">${c}</span>`).join('');
+  document.getElementById('rRare').textContent='상위 '+bp.rare+'% 결';
   document.getElementById('shareCode').textContent=resultCode;
-  document.getElementById('shareName').textContent=t.name.replace(/<br>/g,' ');
-  document.getElementById('shareName2').textContent=t.name.replace(/<br>/g,' ');
+  document.getElementById('shareName').textContent=bp.name;
+  document.getElementById('shareName2').textContent=bp.name;
 
   // dims overview
   const dimsEl=document.getElementById('dims');
