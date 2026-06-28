@@ -1414,6 +1414,23 @@ function sendTyped(){
 
 // 사용자가 직접 쓴 답변을 AI(Gemini)로 분석해 빅5 점수에 합산
 let aiPending=0;   // 진행 중인 AI 분석 개수
+
+// AI가 막혔을 때 쓰는 간단 키워드 백업 분석 (대략적 점수)
+function keywordScore(text){
+  const t=text, w={O:0,C:0,E:0,A:0,N:0};
+  if(/혼자|조용|집|쉬|차분|내성적|혼자서/.test(t)) w.E-=2;
+  if(/사람|친구|만나|모임|얘기|수다|활발|어울리/.test(t)) w.E+=2;
+  if(/계획|정리|꼼꼼|준비|체계|미리|완벽|꾸준/.test(t)) w.C+=2;
+  if(/즉흥|대충|마음대로|귀찮|미루|되는대로/.test(t)) w.C-=2;
+  if(/걱정|불안|예민|스트레스|초조|긴장|두렵|흔들/.test(t)) w.N+=2;
+  if(/평온|단단|괜찮|무던|담담|차분|안정/.test(t)) w.N-=1;
+  if(/공감|배려|챙기|위로|마음|도와|따뜻|이해/.test(t)) w.A+=2;
+  if(/논리|효율|결과|냉정|객관|따진|분석/.test(t)) w.A-=1;
+  if(/새로운|호기심|상상|아이디어|배우|탐구|도전|궁금/.test(t)) w.O+=2;
+  if(/익숙|안정|반복|늘|항상|똑같/.test(t)) w.O-=1;
+  return w;
+}
+
 function analyzeWithAI(text, question){
   aiPending++;
   try{
@@ -1424,19 +1441,30 @@ function analyzeWithAI(text, question){
     })
     .then(r=>r.json())
     .then(d=>{
-      console.log('[결 AI 분석]', d);   // 진단용: F12 콘솔에서 확인 가능
-      window.__lastAI = d;              // 진단용: 콘솔에서 window.__lastAI 로 확인
-      if(d && d.scores){
-        // AI 분석은 문맥을 정확히 읽으므로 가중치 2배 적용 (±3 → 최대 ±6)
-        for(const k of ['O','C','E','A','N']){
-          const s=parseInt(d.scores[k],10);
-          if(!isNaN(s)) tally[k]+=s*2;
-        }
+      const ok = d && d.note==='ok' && d.scores;
+      // AI가 정상 분석한 경우: 그 점수 사용 (가중치 2배)
+      // AI가 막히거나(429 등) 실패한 경우: 키워드 백업으로 점수 부여
+      let scores;
+      if(ok){
+        scores={}; for(const k of ['O','C','E','A','N']){ scores[k]=(parseInt(d.scores[k],10)||0)*2; }
+      }else{
+        scores=keywordScore(text);   // 백업
+      }
+      for(const k of ['O','C','E','A','N']){
+        if(!isNaN(scores[k])) tally[k]+=scores[k];
       }
     })
-    .catch(()=>{})
+    .catch(()=>{
+      // 네트워크 자체 실패 시에도 키워드 백업
+      const scores=keywordScore(text);
+      for(const k in scores) tally[k]+=scores[k];
+    })
     .finally(()=>{ aiPending--; });
-  }catch(e){ aiPending--; }
+  }catch(e){
+    const scores=keywordScore(text);
+    for(const k in scores) tally[k]+=scores[k];
+    aiPending--;
+  }
 }
 function advance(){
   turn++;
