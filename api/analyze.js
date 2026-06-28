@@ -1,7 +1,5 @@
 // ============================================================
 //  결(GYEOL) — 사용자 답변을 빅5(OCEAN) 점수로 분석하는 서버 함수
-//  Gemini API를 호출하며, 키는 환경변수(GEMINI_API_KEY)에 숨겨져 있음.
-//  보안: 키 비노출 / 입력 길이 제한 / 프롬프트 공격 방어 / JSON 형식 고정
 // ============================================================
 
 module.exports = async (req, res) => {
@@ -53,7 +51,7 @@ module.exports = async (req, res) => {
     (question ? ('질문: ' + question + '\n') : '') +
     '<답변>\n' + text + '\n</답변>';
 
-  const MODEL = 'gemini-2.5-flash';
+  const MODEL = 'gemini-2.5-flash-lite';
   const url = 'https://generativelanguage.googleapis.com/v1beta/models/' +
               MODEL + ':generateContent?key=' + KEY;
 
@@ -68,11 +66,18 @@ module.exports = async (req, res) => {
   };
 
   try {
-    const r = await fetch(url, {
+    const callGemini = () => fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
+
+    let r = await callGemini();
+
+    if (r.status === 429) {
+      await new Promise(rs => setTimeout(rs, 1200));
+      r = await callGemini();
+    }
 
     if (!r.ok) {
       let detail = '';
