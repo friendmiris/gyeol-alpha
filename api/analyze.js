@@ -72,10 +72,12 @@ module.exports = async (req, res) => {
       body: JSON.stringify(payload)
     });
 
+    // 429(횟수초과)면 점점 더 기다리며 최대 3회 재시도 (0.8s → 1.6s → 2.4s)
     let r = await callGemini();
-
-    if (r.status === 429) {
-      await new Promise(rs => setTimeout(rs, 1200));
+    let tries = 0;
+    while (r.status === 429 && tries < 3) {
+      tries++;
+      await new Promise(rs => setTimeout(rs, 800 * tries));
       r = await callGemini();
     }
 
